@@ -1,35 +1,47 @@
 #include "system.h"
 #include "led.h"
 #include "pacer.h"
+#include "display.h"
+#include "task.h"
 
 
-/* Define polling rate in Hz.  */
-#define LOOP_RATE 1000
+// included for proof of concept
+ typedef struct state_struct
+ {
+     uint8_t led;
+     uint8_t on;
+ } state_t;
 
-#define LED_RATE 2
+// included for proof of concept
+ static void led_task (void *data)
+ {
+     state_t *pstate = data;
 
-int main (void)
-{
-    unsigned int count = 0;
-    unsigned int period = LOOP_RATE / LED_RATE;
+     led_set (pstate->led, pstate->on);
+     pstate->on = !pstate->on;
+ }
 
-    system_init ();
 
-    pacer_init (LOOP_RATE);
-    led_init ();
+ int main (void)
+ {
+    // Initilizes the screen_display
+     uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT];
+     display_init(screen_display);
+     
 
-    /* Paced loop.  */
-    while (1)
-    {
-        /* Wait for next tick.  */
-        pacer_wait ();
+     state_t led1 = {.led = LED1, .on = 0}; // included for proof of concept
 
-        led_set (LED1, count < period / 2);
-        count++;
-        if (count >= period)
-            count = 0;
+     task_t tasks[] =
+     {
+         {.func = display_draw, .period = TASK_RATE / 500, .data = &screen_display}, // drawing a test pattern
+         {.func = led_task, .period = TASK_RATE / 2, .data = &led1}, // included for proof of concept
+     };
 
-    }
+     system_init ();
+     led_init ();
+    
+     task_schedule (tasks, 2);
+     return 0;
+ }
 
-    return 0;
-}
+
