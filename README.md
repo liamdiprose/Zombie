@@ -29,7 +29,6 @@
 * Or: integers are stored in a two dimentional array where the integer is the time the zombie updates
 	* Faster navigation
 
-
 TODO:
 * Determine mathematical functions for determining when things happen based on a continuous counter (Use hardware counter?) and other factors such as speed
   * Heart rate LED
