@@ -37,5 +37,6 @@ TODO:
   * Player update
   * IR serial
   * Redraws
+  * Not screw up
 
 * Investigate drawing of map 
