@@ -55,7 +55,7 @@
 
 
 #ifndef TIMER_CLOCK_DIVISOR
-#define TIMER_CLOCK_DIVISOR 256
+#define TIMER_CLOCK_DIVISOR 1
 #endif
 
 /** Rate in Hz that the timer is incremented.  */
@@ -67,7 +67,7 @@
 
 
 /** The maximum delay (in ticks).  */
-#define TIMER_DELAY_MAX (65536u - (TIMER_OVERRUN_MAX  ))
+#define TIMER_DELAY_MAX (65536u - (TIMER_OVERRUN_MAX ))
 
 
 /** Define timer ticks.  */

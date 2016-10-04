@@ -131,7 +131,7 @@ typedef struct task_struct
     @param num_tasks number of tasks to schedule
     @return this never returns.
 */
-void task_schedule (task_t *tasks, uint8_t num_tasks);
+void task_schedule (task_t *tasks, uint8_t num_tasks, uint32_t num_ticks_per_update);
 
 #endif
 

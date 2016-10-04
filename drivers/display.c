@@ -82,11 +82,11 @@ void display_init (uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT])
     int y = 0;
 
     uint8_t init_screen[DISPLAY_WIDTH][DISPLAY_HEIGHT] = {
-        {0,1,0,50,0,1,0},
-        {0,1,0,50,0,1,0},
-        {0,1,0,50,0,1,0},
-        {0,1,0,50,0,1,0},
-        {0,1,0,50,0,1,0}
+        {0,1,0,20,0,1,0},
+        {0,1,0,20,0,1,0},
+        {0,1,0,20,0,1,0},
+        {0,1,0,20,0,1,0},
+        {0,1,0,20,0,1,0}
     };
 
     for (x = 0; x < DISPLAY_WIDTH; x++)
@@ -105,7 +105,7 @@ void display_init (uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT])
 static uint8_t pwm_tick = 0;
 static int current_col = 0;
 void display_draw(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]){
-    if (pwm_tick > 250){
+    if (pwm_tick > 20){
         pwm_tick = 0;
     }
     display_pixel_set ( current_col, 0, pwm_tick < screen_display[current_col][0]);
