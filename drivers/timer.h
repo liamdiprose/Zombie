@@ -67,7 +67,7 @@
 
 
 /** The maximum delay (in ticks).  */
-#define TIMER_DELAY_MAX (65536u - TIMER_OVERRUN_MAX)
+#define TIMER_DELAY_MAX (65536u - (TIMER_OVERRUN_MAX  ))
 
 
 /** Define timer ticks.  */

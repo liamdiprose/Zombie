@@ -51,7 +51,7 @@ bool display_pixel_get (uint8_t col, uint8_t row)
 
 
 /** Update display (perform refreshing).  */
-void display_update (void)
+uint8_t display_update (void)
 {
     static uint8_t col = 0;
 
@@ -60,6 +60,8 @@ void display_update (void)
     col++;
     if (col >= DISPLAY_WIDTH)
         col = 0;
+
+    return col;
 }
 
 
@@ -79,11 +81,20 @@ void display_init (uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT])
     int x = 0;
     int y = 0;
 
+    uint8_t init_screen[DISPLAY_WIDTH][DISPLAY_HEIGHT] = {
+        {0,1,0,50,0,1,0},
+        {0,1,0,50,0,1,0},
+        {0,1,0,50,0,1,0},
+        {0,1,0,50,0,1,0},
+        {0,1,0,50,0,1,0}
+    };
+
     for (x = 0; x < DISPLAY_WIDTH; x++)
     {
         for (y = 0; y < DISPLAY_HEIGHT; y++)
         {
-            screen_display[x][y] = (x+y)%2;
+            //screen_display[x][y] = (x+y)%2;
+            screen_display[x][y] = init_screen[x][y];
         }
     }
 
@@ -91,22 +102,20 @@ void display_init (uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT])
     display_clear ();
 }
 
+static uint8_t pwm_tick = 0;
+static int current_col = 0;
 void display_draw(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]){
-    display_update ();
-    static uint8_t pwm_tick = 0;
-    pwm_tick++;
-    int x = 0;
-    int y = 0;
-    for (x = 0; x < DISPLAY_WIDTH; x++)
-    {
-        for (y = 0; y < DISPLAY_HEIGHT; y++)
-        {
-            if (pwm_tick < 100){
-                display_pixel_set ( x, y, screen_display[x][y] == 0);
-            } else {
-                display_pixel_set ( x, y, screen_display[x][y] == 1);
-            }
-        }
+    if (pwm_tick > 250){
+        pwm_tick = 0;
     }
-    pwm_tick = pwm_tick % 200;
+    display_pixel_set ( current_col, 0, pwm_tick < screen_display[current_col][0]);
+    display_pixel_set ( current_col, 1, pwm_tick < screen_display[current_col][1]);
+    display_pixel_set ( current_col, 2, pwm_tick < screen_display[current_col][2]);
+    display_pixel_set ( current_col, 3, pwm_tick < screen_display[current_col][3]);
+    display_pixel_set ( current_col, 4, pwm_tick < screen_display[current_col][4]);
+    display_pixel_set ( current_col, 5, pwm_tick < screen_display[current_col][5]);
+    display_pixel_set ( current_col, 6, pwm_tick < screen_display[current_col][6]);
+    
+    pwm_tick++;
+    current_col = display_update ();
 }

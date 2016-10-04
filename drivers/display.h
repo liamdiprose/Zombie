@@ -33,7 +33,7 @@ bool display_pixel_get (uint8_t col, uint8_t row);
 
 
 /** Update display (perform refreshing).  */
-void display_update (void);
+uint8_t display_update (void);
 
 
 /** Clear display.   */

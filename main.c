@@ -15,10 +15,14 @@
 // included for proof of concept
  static void led_task (void *data)
  {
+     static count = 0;
+     count = (count + 1) % 5;
+     if (count == 0){
      state_t *pstate = data;
 
      led_set (pstate->led, pstate->on);
      pstate->on = !pstate->on;
+     }
  }
 
 
@@ -33,8 +37,8 @@
 
      task_t tasks[] =
      {
-         {.func = display_draw, .period = TASK_RATE / 500, .data = &screen_display}, // drawing a test pattern
-         {.func = led_task, .period = TASK_RATE / 2, .data = &led1}, // included for proof of concept
+         {.func = display_draw, .period = TASK_RATE /6000, .data = &screen_display}, // drawing a test pattern
+         {.func = led_task, .period = TASK_RATE / 10, .data = &led1}, // included for proof of concept
      };
 
      system_init ();
