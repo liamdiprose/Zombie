@@ -55,7 +55,7 @@
 
 
 #ifndef TIMER_CLOCK_DIVISOR
-#define TIMER_CLOCK_DIVISOR 1
+#define TIMER_CLOCK_DIVISOR 1024
 #endif
 
 /** Rate in Hz that the timer is incremented.  */

@@ -122,6 +122,8 @@ typedef struct task_struct
     timer_tick_t period;    
     /** When to reschedule.  */
     timer_tick_t reschedule;
+    /** counter **/
+    uint32_t counter;
 } task_t;
 
 
@@ -131,7 +133,7 @@ typedef struct task_struct
     @param num_tasks number of tasks to schedule
     @return this never returns.
 */
-void task_schedule (task_t *tasks, uint8_t num_tasks, uint32_t num_ticks_per_update);
+void task_schedule (task_t *tasks, uint8_t num_tasks);
 
 #endif
 

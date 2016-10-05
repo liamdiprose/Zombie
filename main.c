@@ -34,13 +34,13 @@
      task_t tasks[] =
      {
          {.func = display_draw, .period = 1, .data = &screen_display}, // drawing a test pattern
-         {.func = led_task, .period = 500, .data = &led1}, // included for proof of concept
+         {.func = led_task, .period = 800, .data = &led1}, // included for proof of concept
      };
 
      system_init ();
      led_init ();
     
-     task_schedule (tasks, 2, 1000);
+     task_schedule (tasks, 2);
      return 0;
  }
 

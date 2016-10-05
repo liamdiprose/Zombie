@@ -43,6 +43,10 @@ void display_clear (void);
 /** Initialise display.   */
 void display_init (uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]);
 
+/** Update display.   */
+void display_pulse(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]);
+
+/** Draw display.   */
 void display_draw(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]);
 
 #endif

@@ -18,24 +18,20 @@
     @param num_tasks number of tasks to schedule
     @return this never returns.
 */
-void task_schedule (task_t *tasks, uint8_t num_tasks, uint32_t num_ticks_per_update)
+void task_schedule (task_t *tasks, uint8_t num_tasks)
 {
     timer_init ();
-
-    uint32_t ticks = 0;
     uint8_t current_task = 0;
 
     while (1){
-
         for (current_task = 0; current_task < num_tasks; current_task++ ){
-            if (ticks % (tasks + current_task)->period == 0){
+            (tasks + current_task)->counter += 1;
+
+            if ((tasks + current_task)->counter > (tasks + current_task)->period){
+                (tasks + current_task)->counter = 0;
                 (tasks + current_task)->func ((tasks +current_task)->data);
             }
-        }
 
-        ticks++;
-        if (ticks >= num_ticks_per_update){
-            ticks = 0;
         }
     }
 }

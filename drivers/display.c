@@ -7,6 +7,7 @@
 #include "ledmat.h"
 #include "display.h"
 
+#define PULSE_MAX 250
 /** The state of the display (frame buffer).  */
 static uint8_t display[DISPLAY_WIDTH];
 
@@ -50,11 +51,10 @@ bool display_pixel_get (uint8_t col, uint8_t row)
 }
 
 
+static uint8_t col = 0;
 /** Update display (perform refreshing).  */
 uint8_t display_update (void)
 {
-    static uint8_t col = 0;
-
     ledmat_display_column (display[col], col);
     
     col++;
@@ -104,10 +104,35 @@ void display_init (uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT])
 
 static uint8_t pwm_tick = 0;
 static int current_col = 0;
+
+void display_pulse(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]){
+
+}
+
 void display_draw(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]){
-    if (pwm_tick > 20){
-        pwm_tick = 0;
+    //static int pixel_pulse = 0;
+    //static bool is_fadein = true;
+/*
+    if (is_fadein){
+        pixel_pulse++;
+        if (pixel_pulse >= PULSE_MAX){
+            is_fadein = true;
+        }
+    }else{
+        pixel_pulse--;
+        if (pixel_pulse <= 0){
+            is_fadein = true;
+        }
     }
+  */  
+
+
+    if (pwm_tick > 40){
+        pwm_tick = 0;
+    } 
+
+    
+    
     display_pixel_set ( current_col, 0, pwm_tick < screen_display[current_col][0]);
     display_pixel_set ( current_col, 1, pwm_tick < screen_display[current_col][1]);
     display_pixel_set ( current_col, 2, pwm_tick < screen_display[current_col][2]);
@@ -116,6 +141,7 @@ void display_draw(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]){
     display_pixel_set ( current_col, 5, pwm_tick < screen_display[current_col][5]);
     display_pixel_set ( current_col, 6, pwm_tick < screen_display[current_col][6]);
     
-    pwm_tick++;
+    pwm_tick = pwm_tick + 1;
+    
     current_col = display_update ();
 }
