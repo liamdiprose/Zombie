@@ -3,7 +3,7 @@
 #include "pacer.h"
 #include "display.h"
 #include "task.h"
-
+#include "communication.h"
 
 // included for proof of concept
  typedef struct state_struct
@@ -31,7 +31,8 @@
     // Initilizes the screen_display
      uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT];
      display_init(screen_display);
-     
+    
+            
 
      state_t led1 = {.led = LED1, .on = 0}; // included for proof of concept
 

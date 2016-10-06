@@ -1,18 +1,38 @@
+# Zombie Survival Makefile
+# Liam Diprose and Jeremy Craig
+#
+# TODO: Stuff about the makefile: targets etc
+#
+
+
+# Target file, without extention. i.e.  $(TARGET).c
+TARGET = main
+
+# Optimisation, s for compiled size optimisation
+OPTIMISATION = s
+
+# MCU to compile for/flash
+MMCU = atmega32u2
 
 # Definitions.
 CC = avr-gcc
-CFLAGS = -mmcu=atmega32u2 -Os -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Iutils
+CFLAGS += -mmcu=$(MMCU)
+CFLAGS += -O$(OPTIMISATION)
+CFLAGS += -Wall
+CFLAGS += -Wstrict-prototypes
+CFLAGS += -Wextra -g -I. -Idrivers -Iutils
+
 OBJCOPY = avr-objcopy
 SIZE = avr-size
 DEL = rm
 
 
 # Default target.
-all: main.out
+all: $(TARGET).out
 
 
 # Compile: create object files from C source files.
-main.o: main.c drivers/system.h drivers/led.h drivers/display.h utils/pacer.h utils/task.h
+$(TARGET).o: $(TARGET).c drivers/system.h drivers/led.h drivers/display.h utils/pacer.h utils/task.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 pio.o: drivers/pio.c drivers/pio.h drivers/system.h
@@ -56,14 +76,14 @@ timer0.o: drivers/timer0.c drivers/bits.h drivers/prescale.h drivers/system.h dr
 
 
 # Link: create output file (executable) from object files.
-main.out: main.o pio.o system.o timer.o led.o pacer.o display.o ledmat.o task.o ir_uart.o usart1.o prescale.o timer0.o
+main.out: $(TARGET).o pio.o system.o timer.o led.o pacer.o display.o ledmat.o task.o ir_uart.o usart1.o prescale.o timer0.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 
 
 # Create hex file for programming from executable file.
-main.hex: main.out
-	$(OBJCOPY) -O ihex main.out main.hex
+$(TARGET).hex: $(TARGET).out
+	$(OBJCOPY) -O ihex $(TARGET).out $(TARGET).hex
 
 
 # Target: clean project.
@@ -74,7 +94,7 @@ clean:
 
 # Target: program project.
 .PHONY: program
-program: main.hex
-	dfu-programmer atmega32u2 erase --force; dfu-programmer atmega32u2 flash main.hex; dfu-programmer atmega32u2 start
+program: $(TARGET).hex
+	dfu-programmer $(MMCU) erase --force; dfu-programmer $(MMCU) flash $(TARGET).hex; dfu-programmer $(MMCU) start
 
 
