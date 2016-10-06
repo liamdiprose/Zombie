@@ -16,8 +16,8 @@
 
 #define ARRAY_SIZE(ARRAY) (sizeof (ARRAY) / sizeof (ARRAY[0]))
 
-#define  __unused__ __attribute__ ((unused))
 
+#define  __unused__ __attribute__ ((unused))
 
 /** Clock frequency Hz.  */
 #define F_CPU 8000000

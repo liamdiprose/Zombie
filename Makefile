@@ -1,7 +1,7 @@
 
 # Definitions.
 CC = avr-gcc
-CFLAGS = -mmcu=atmega32u2 -Os -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Iutils
+CFLAGS = -mmcu=atmega32u2 -Ofast -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Iutils -Igame
 OBJCOPY = avr-objcopy
 SIZE = avr-size
 DEL = rm
@@ -51,12 +51,20 @@ prescale.o: drivers/prescale.c drivers/prescale.h drivers/system.h
 timer0.o: drivers/timer0.c drivers/bits.h drivers/prescale.h drivers/system.h drivers/timer0.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
+heartbeat.o: game/heartbeat.c drivers/system.h drivers/led.h game/heartbeat.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
+level.o: game/level.c drivers/system.h drivers/display.h game/level.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
+#players.o: game/heartbeat.c drivers/system.h drivers/led.h game/heartbeat.h
+#	$(CC) -c $(CFLAGS) $< -o $@
 
 
 
 
 # Link: create output file (executable) from object files.
-main.out: main.o pio.o system.o timer.o led.o pacer.o display.o ledmat.o task.o ir_uart.o usart1.o prescale.o timer0.o
+main.out: main.o pio.o system.o timer.o led.o pacer.o display.o ledmat.o task.o ir_uart.o usart1.o prescale.o timer0.o heartbeat.o level.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

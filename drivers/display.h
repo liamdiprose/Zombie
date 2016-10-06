@@ -16,7 +16,9 @@
 #define DISPLAY_WIDTH LEDMAT_COLS_NUM
 #define DISPLAY_HEIGHT LEDMAT_ROWS_NUM
 
+#define STEPS_OF_BRIGHTNESS 40
 
+#define PULSE_MAX 15
 
 /** Set state of a display pixel.
     @param col pixel column (0 left)
@@ -41,12 +43,15 @@ void display_clear (void);
 
 
 /** Initialise display.   */
-void display_init (uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]);
+void display_init (void);
 
 /** Update display.   */
-void display_pulse(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]);
+void display_pulse(void *data);
+
+/** getmap display.   */
+void display_setmap(__unused__ uint8_t data[][DISPLAY_HEIGHT]);
 
 /** Draw display.   */
-void display_draw(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]);
+void display_draw(void *data);
 
 #endif

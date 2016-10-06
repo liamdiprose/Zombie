@@ -7,10 +7,14 @@
 #include "ledmat.h"
 #include "display.h"
 
-#define PULSE_MAX 250
-/** The state of the display (frame buffer).  */
-static uint8_t display[DISPLAY_WIDTH];
 
+uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT];
+uint8_t draw_display[DISPLAY_WIDTH][DISPLAY_HEIGHT];
+static uint8_t display[DISPLAY_WIDTH];
+static uint8_t col = 0;
+static uint8_t pwm_tick = 0;
+static int current_pulse_value = 0;
+static bool is_pulse_fade_in = true;
 
 /** Set state of a display pixel.
     @param col pixel column
@@ -18,8 +22,8 @@ static uint8_t display[DISPLAY_WIDTH];
     @param val pixel state.  */
 void display_pixel_set (uint8_t col, uint8_t row, bool val)
 {
-    uint8_t bitmask;
-    uint8_t pattern;
+    register uint8_t bitmask;
+    register uint8_t pattern;
 
     if (col >= DISPLAY_WIDTH || row >= DISPLAY_HEIGHT)
         return;
@@ -50,8 +54,6 @@ bool display_pixel_get (uint8_t col, uint8_t row)
     return (display[col] & bitmask) != 0;
 }
 
-
-static uint8_t col = 0;
 /** Update display (perform refreshing).  */
 uint8_t display_update (void)
 {
@@ -68,7 +70,7 @@ uint8_t display_update (void)
 /** Clear display.   */
 void display_clear (void)
 {
-    int col;
+    register int col;
 
     for (col = 0; col < DISPLAY_WIDTH; col++)
         display[col] = 0;
@@ -76,25 +78,18 @@ void display_clear (void)
 
 
 /** Initialise display.   */
-void display_init (uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT])
+void display_init (void )
 {
-    int x = 0;
-    int y = 0;
-
-    uint8_t init_screen[DISPLAY_WIDTH][DISPLAY_HEIGHT] = {
-        {0,1,0,20,0,1,0},
-        {0,1,0,20,0,1,0},
-        {0,1,0,20,0,1,0},
-        {0,1,0,20,0,1,0},
-        {0,1,0,20,0,1,0}
-    };
-
+    register int x = 0;
+    register int y = 0;
+    
     for (x = 0; x < DISPLAY_WIDTH; x++)
     {
         for (y = 0; y < DISPLAY_HEIGHT; y++)
         {
             //screen_display[x][y] = (x+y)%2;
-            screen_display[x][y] = init_screen[x][y];
+            screen_display[x][y] = 0;
+            draw_display[x][y] = 0;
         }
     }
 
@@ -102,45 +97,72 @@ void display_init (uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT])
     display_clear ();
 }
 
-static uint8_t pwm_tick = 0;
-static int current_col = 0;
+void display_pulse(__unused__ void *data){
+    //static int current_pulse_value = 0;
+    //static bool is_pulse_fade_in = true;
+    register int x = 0;
+    register int y = 0;
 
-void display_pulse(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]){
-
-}
-
-void display_draw(uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT]){
-    //static int pixel_pulse = 0;
-    //static bool is_fadein = true;
-/*
-    if (is_fadein){
-        pixel_pulse++;
-        if (pixel_pulse >= PULSE_MAX){
-            is_fadein = true;
+    if (is_pulse_fade_in){
+        current_pulse_value++;
+        if (current_pulse_value >= PULSE_MAX){
+            is_pulse_fade_in = false;
         }
     }else{
-        pixel_pulse--;
-        if (pixel_pulse <= 0){
-            is_fadein = true;
+        current_pulse_value--;
+        if (current_pulse_value <= 1){
+            is_pulse_fade_in= true;
         }
     }
-  */  
 
+    for (x = 0; x < DISPLAY_WIDTH; x++)
+    {
+        for (y = 0; y < DISPLAY_HEIGHT; y++)
+        {
+            //screen_display[x][y] = (x+y)%2;
+            if (screen_display[x][y] > 40){
+                draw_display[x][y] = current_pulse_value;
+            } else {
+                draw_display[x][y] = screen_display[x][y];
+            }
+        }
+    }
+}
 
-    if (pwm_tick > 40){
+static uint8_t current_col = 0;
+static uint8_t frame_priority[41] = { 
+    /*0*/  0,20,12,32,6,26,23,36,3,16,
+    /*10*/ 29,9,24,4,34,14,40,21,1,37,
+    /*20*/ 7,11,31,7,27,35,15,25,5,30,
+    /*30*/ 10,22,39,2,19,33,13,28,8,18,
+           38
+    };
+    
+
+void display_setmap(__unused__ uint8_t data[][DISPLAY_HEIGHT]){
+    register int x = 0;
+    register int y = 0;
+    for (x = 0; x < DISPLAY_WIDTH; x++)
+    {
+        for (y = 0; y < DISPLAY_HEIGHT; y++)
+        {
+            //screen_display[x][y] = (x+y)%2;
+            screen_display[x][y] = data[x][y];
+        }
+    }
+}
+
+void display_draw(__unused__ void *data){
+
+    if (pwm_tick > STEPS_OF_BRIGHTNESS){
         pwm_tick = 0;
     } 
 
-    
-    
-    display_pixel_set ( current_col, 0, pwm_tick < screen_display[current_col][0]);
-    display_pixel_set ( current_col, 1, pwm_tick < screen_display[current_col][1]);
-    display_pixel_set ( current_col, 2, pwm_tick < screen_display[current_col][2]);
-    display_pixel_set ( current_col, 3, pwm_tick < screen_display[current_col][3]);
-    display_pixel_set ( current_col, 4, pwm_tick < screen_display[current_col][4]);
-    display_pixel_set ( current_col, 5, pwm_tick < screen_display[current_col][5]);
-    display_pixel_set ( current_col, 6, pwm_tick < screen_display[current_col][6]);
-    
+    register uint8_t count;
+    for (count = 0; count < DISPLAY_HEIGHT; count++){
+    display_pixel_set ( current_col, count, frame_priority[pwm_tick] < draw_display[current_col][count]);
+    }
+
     pwm_tick = pwm_tick + 1;
     
     current_col = display_update ();

@@ -18,35 +18,6 @@
     The timer is free-running and will increment TIMER_RATE times
     per second.  When the timer reaches 65535 on the next increment
     it rolls over to 0.
-
-    Here's a simple example for turning an LED on for 0.5 second
-    and then off for 0.75 second.
-
-       @code
-       #include "timer.h"
-       #include "led.h"
-
-       void main (void)
-       {
-           timer_tick_t now;
-
-           system_init ();
-           timer_init ();
-           led_init ();
-
-           now = timer_get ();
-           while (1)
-           {
-               led_set (LED1, 1);
-
-               now = timer_wait_until (now + (timer_tick_t)(TIMER_RATE * 0.5));
-        
-               led_set (LED1, 0);
-        
-               now = timer_wait_until (now + (timer_tick_t)(TIMER_RATE * 0.75));
-           }
-       }
-       @endcode
 */
 #ifndef TIMER_H
 #define TIMER_H
@@ -55,7 +26,7 @@
 
 
 #ifndef TIMER_CLOCK_DIVISOR
-#define TIMER_CLOCK_DIVISOR 1024
+#define TIMER_CLOCK_DIVISOR 1
 #endif
 
 /** Rate in Hz that the timer is incremented.  */

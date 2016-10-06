@@ -3,44 +3,28 @@
 #include "pacer.h"
 #include "display.h"
 #include "task.h"
-
-
-// included for proof of concept
- typedef struct state_struct
- {
-     uint8_t led;
-     uint8_t on;
- } state_t;
-
-// included for proof of concept
- static void led_task (void *data)
- {
-     state_t *pstate = data;
-
-     led_set (pstate->led, pstate->on);
-     pstate->on = !pstate->on;
- }
-
+#include "heartbeat.h"
+#include "level.h"
 
  int main (void)
  {
     // Initilizes the screen_display
-     uint8_t screen_display[DISPLAY_WIDTH][DISPLAY_HEIGHT];
-     display_init(screen_display);
-     
-
-     state_t led1 = {.led = LED1, .on = 0}; // included for proof of concept
+     level_init();
+     display_init();
+     system_init ();
+     led_init ();
 
      task_t tasks[] =
      {
-         {.func = display_draw, .period = 1, .data = &screen_display}, // drawing a test pattern
-         {.func = led_task, .period = 800, .data = &led1}, // included for proof of concept
+         {.func = display_draw, .period = 1, .data = 0}, // drawing a test pattern
+         {.func = display_pulse, .period = 800, .data = 0}, // drawing a test pattern
+         {.func = display_setmap, .period = 400, .data = level_get_display(0,0)}, // drawing a test pattern
+         {.func = heartbeat_task, .period = 6400, .data = 0}, // included for proof of concept
      };
 
-     system_init ();
-     led_init ();
+     
     
-     task_schedule (tasks, 2);
+     task_schedule (tasks, 4);
      return 0;
  }
 
