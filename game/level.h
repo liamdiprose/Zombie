@@ -2,23 +2,22 @@
 #define LEVEL_H
 
 #include "system.h"
+#include "point.h"
 
 #define LEVEL_WIDTH 20
 #define LEVEL_HEIGHT 20
-#define LEVEL_WALL_WIDTH 2
 
 #define WALL_CHAR 'w'
-#define WALL_VALUE 49
+#define WALL_VALUE 48
 #define EMPTY_CHAR ' '
 #define EMPTY_VALUE 0
 #define BACKGROUND_CHAR 'b'
-#define BACKGROUND_VALUE 'b'
+#define BACKGROUND_VALUE 1
 #define PLAYER_CHAR 'p'
-#define PLAYER_VALUE 'p'
+#define PLAYER_VALUE 30
 #define ZOMBIE_CHAR 'z'
-#define ZOMBIE_VALUE 'z'
+#define ZOMBIE_VALUE 50
 
-void level_init(void);
-uint8_t* level_get_display(uint8_t x_position, uint8_t y_position);
+void level_init(char data[][LEVEL_WIDTH]);
 
 #endif

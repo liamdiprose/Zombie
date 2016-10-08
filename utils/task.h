@@ -122,8 +122,7 @@ typedef struct task_struct
     timer_tick_t period;    
     /** When to reschedule.  */
     timer_tick_t reschedule;
-    /** counter **/
-    uint32_t counter;
+     uint32_t counter;
 } task_t;
 
 

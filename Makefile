@@ -12,7 +12,7 @@ all: main.out
 
 
 # Compile: create object files from C source files.
-main.o: main.c drivers/system.h drivers/led.h drivers/display.h utils/pacer.h utils/task.h
+main.o: main.c drivers/system.h drivers/led.h drivers/display.h drivers/navswitch.h utils/pacer.h game/player.h utils/point.h utils/task.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 pio.o: drivers/pio.c drivers/pio.h drivers/system.h
@@ -30,7 +30,7 @@ led.o: drivers/led.c drivers/pio.h drivers/system.h drivers/led.h
 pacer.o: utils/pacer.c drivers/system.h drivers/timer.h utils/pacer.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-display.o: drivers/display.c drivers/system.h drivers/display.h drivers/ledmat.h
+display.o: drivers/display.c drivers/system.h game/level.h utils/point.h drivers/display.h game/player.h drivers/ledmat.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 ledmat.o: drivers/ledmat.c drivers/pio.h drivers/system.h drivers/ledmat.h
@@ -40,6 +40,9 @@ task.o: utils/task.c drivers/system.h drivers/timer.h utils/task.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 ir_uart.o: drivers/ir_uart.c drivers/ir_uart.h drivers/pio.h drivers/system.h drivers/timer0.h drivers/usart1.h
+	$(CC) -c $(CFLAGS) $< -o $@
+
+navswitch.o: drivers/navswitch.c drivers/system.h drivers/delay.h drivers/pio.h drivers/navswitch.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 usart1.o: drivers/usart1.c drivers/system.h drivers/usart1.h
@@ -54,17 +57,17 @@ timer0.o: drivers/timer0.c drivers/bits.h drivers/prescale.h drivers/system.h dr
 heartbeat.o: game/heartbeat.c drivers/system.h drivers/led.h game/heartbeat.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-level.o: game/level.c drivers/system.h drivers/display.h game/level.h
+level.o: game/level.c drivers/system.h drivers/display.h game/player.h game/level.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-#players.o: game/heartbeat.c drivers/system.h drivers/led.h game/heartbeat.h
-#	$(CC) -c $(CFLAGS) $< -o $@
+player.o: game/player.c drivers/system.h drivers/navswitch.h utils/point.h game/player.h
+	$(CC) -c $(CFLAGS) $< -o $@
 
 
 
 
 # Link: create output file (executable) from object files.
-main.out: main.o pio.o system.o timer.o led.o pacer.o display.o ledmat.o task.o ir_uart.o usart1.o prescale.o timer0.o heartbeat.o level.o
+main.out: main.o pio.o system.o timer.o led.o pacer.o display.o ledmat.o task.o ir_uart.o usart1.o prescale.o timer0.o heartbeat.o level.o player.o navswitch.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

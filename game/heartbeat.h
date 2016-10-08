@@ -4,7 +4,7 @@
 
 #include "system.h"
 
-
-void heartbeat_task (void *data);
+void heartbeat_init ( void );
+void heartbeat_task ( void *data );
 
 #endif
