@@ -8,8 +8,9 @@
 #include "player.h"
 #include "point.h"
 #include "navswitch.h"
+#include "communication.h"
 
-bool is_host = true;
+bool is_host = false;
 
 void initilization(void){
     //TODO: REORGANISE COMMUNICATION AND MANAGEMENT
@@ -25,11 +26,14 @@ void initilization(void){
      // heartbeat_init(player[].health)
      // Initilizes the screen_display
      
-    system_init ();
+     system_init ();
      display_init ();
      level_init (level_data);
      player_init (players);
      heartbeat_init ();
+     comm_init();
+
+     is_host = comm_setup_protocol(); 
 }
 
 
@@ -70,14 +74,14 @@ void run_client(void){
          // read input from host and client
          // update zombies
          // update player
-         {.func = player_update,            .period = 1000,     .data = players},
+         //{.func = player_update,            .period = 1000,     .data = players},
          // send data to client
          // draw game
-         {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
-         {.func = display_set_camera,       .period = 200,      .data = players},
-         {.func = display_convert_level,    .period = 400,      .data = 0},
-         {.func = display_set_player,       .period = 200,      .data = players},
-         {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
+         //{.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
+         //{.func = display_set_camera,       .period = 200,      .data = players},
+         //{.func = display_convert_level,    .period = 400,      .data = 0},
+         //{.func = display_set_player,       .period = 200,      .data = players},
+         //{.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
          
          // for client
          // read input from client
@@ -88,7 +92,7 @@ void run_client(void){
      };
      
 
-     event_manager (events, 7);
+     event_manager (events, 1);
 }
 
 

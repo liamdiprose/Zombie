@@ -1,5 +1,4 @@
 #include "ir_uart.h"
-#include "gametypes.h"
 #include "communication.h"
 
 #define CLIENT_RESPONSE_TIMEOUT 250

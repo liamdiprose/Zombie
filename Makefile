@@ -27,7 +27,7 @@ all: $(TARGET).out
 
 
 # Compile: create object files from C source files.
-main.o: main.c drivers/system.h drivers/led.h game/draw.h drivers/navswitch.h drivers/pacer.h game/player.h game/point.h game/event_manager.h
+main.o: main.c drivers/system.h drivers/led.h game/draw.h drivers/navswitch.h drivers/pacer.h game/player.h game/point.h game/event_manager.h game/communication.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 pio.o: drivers/pio.c drivers/pio.h drivers/system.h
@@ -78,10 +78,11 @@ level.o: game/level.c drivers/system.h game/draw.h game/player.h game/level.h
 player.o: game/player.c drivers/system.h drivers/navswitch.h game/point.h game/player.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-
+communication.o: game/communication.c drivers/system.h drivers/navswitch.h game/point.h game/communication.h driver/ir_uart.h driver/pacer.h
+	$(CC) -c $(CFLAGS) $< -o $@
 
 # Link: create output file (executable) from object files.
-main.out: main.o pio.o system.o timer.o led.o pacer.o draw.o ledmat.o event_manager.o ir_uart.o usart1.o prescale.o timer0.o heartbeat.o level.o player.o navswitch.o
+main.out: main.o pio.o system.o timer.o led.o pacer.o draw.o ledmat.o event_manager.o ir_uart.o usart1.o prescale.o timer0.o heartbeat.o level.o player.o navswitch.o communication.o
 	$(CC) $(CFLAGS) $^ -o $@ -lm
 	$(SIZE) $@
 

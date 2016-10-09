@@ -1,7 +1,6 @@
 #ifndef COMMUNICATION_H
 #define COMMUNICATION_H
 
-#include "gametypes.h"
 // Initilise communication
 void communication_init(void);
 

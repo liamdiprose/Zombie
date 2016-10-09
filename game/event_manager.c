@@ -1,19 +1,12 @@
 /** @file   event_manager.c
-    @author Jeremy Craig
+    @author Liam Diprose & Jeremy Craig
     @date   9 October 2016
     @brief  A counter based event manager.
-
 */
 #include "system.h"
 #include "event_manager.h"
 #include "timer.h"
 
-/** Schedule tasks
-    @param tasks pointer to array of tasks (the highest priority
-                 task comes first)
-    @param num_tasks number of tasks to schedule
-    @return this never returns.
-*/
 void event_manager (event_t *events, uint8_t num_events){
     timer_init ();
     register uint8_t current_event = 0;
