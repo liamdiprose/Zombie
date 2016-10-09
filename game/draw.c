@@ -60,10 +60,9 @@ void display_convert_level(char level_data[][LEVEL_WIDTH]){
     
     for (x = 0; x < DISPLAY_WIDTH; x++){
         for (y = 0; y < DISPLAY_HEIGHT; y++){
+            screen_data[y][x] = 0;
+            
             switch(level_data[camera.y + y][camera.x + x]){
-                case WALL_CHAR:
-                    screen_data[y][x] = WALL_VALUE;
-                break;
                 case EMPTY_CHAR:
                     screen_data[y][x] = EMPTY_VALUE;
                 break;
@@ -78,6 +77,16 @@ void display_convert_level(char level_data[][LEVEL_WIDTH]){
                 break;
                 
             }
+            if ((camera.y + y%4) == 0 && (camera.x + x%4) == 0){
+                    screen_data[y][x] = BACKGROUND_CHAR;
+            }
+            if (camera.x + x == 0 || camera.x + x == LEVEL_WIDTH-1){
+                screen_data[y][x] = WALL_VALUE;
+            }
+            if (camera.y + y == 0 || camera.y + y == LEVEL_HEIGHT-1){
+                screen_data[y][x] = WALL_VALUE;
+            }
+            
         }    
     }
 }
