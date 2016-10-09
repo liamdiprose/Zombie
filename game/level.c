@@ -87,7 +87,7 @@ void nav_move_zombie(point zombie_pos, point player_pos)
 
     }
     // TODO: Repeated code 
-    if (!has_moved && !attempted_sideways_move)  {
+    if (!has_moved && !attempted_sideways_move) {
         // Attempt sideways move again
         if (zombie_pos.x > player_pos.x) {
             // Try move zombie to the left 
@@ -101,13 +101,18 @@ void nav_move_zombie(point zombie_pos, point player_pos)
 
 // Update a group of zombies (TODO: group unsed for the time being, only if we need to 
 // break up the execusion of this potienttally CPU-hog of a function
-void nav_update_zombie_group(uint8_t group, point player_pos) {
-		// TODO: Implementups
-		for (uint8_t row = 0; row < LEVEL_WIDTH; row++) {
-				for (uint8_t col = 0; col < LEVEL_HEIGHT; col++) {
-						if (level_get_point((point) {col, row}) == LEVEL_ZOMBIE) {
-							nav_move_zombie((point) {col, row}, player_pos);
-						}
-				}
-		}
+void nav_update_zombie_group(uint8_t group, point player_pos)
+{
+    // TODO: Implementups
+    for (uint8_t row = 0; row < LEVEL_WIDTH; row++) {
+        for (uint8_t col = 0; col < LEVEL_HEIGHT; col++) {
+            if (level_get_point((point) {
+                                col, row}
+                ) == LEVEL_ZOMBIE) {
+                nav_move_zombie((point) {
+                                col, row}
+                                , player_pos);
+            }
+        }
+    }
 }
