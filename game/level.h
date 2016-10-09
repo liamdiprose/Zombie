@@ -18,7 +18,6 @@
 #define ZOMBIE_CHAR 'z'
 #define ZOMBIE_VALUE 50
 
-char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
 
 void level_init(char data[][LEVEL_WIDTH]);
 

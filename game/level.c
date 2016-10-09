@@ -3,6 +3,7 @@
 #include "point.h"
 
 
+char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
 
 void level_init(char data[][LEVEL_WIDTH]){
     /*int x; int y;
@@ -21,6 +22,11 @@ void level_init(char data[][LEVEL_WIDTH]){
 
 }
 
+
 char level_get_point(point pt) {
+	return level_data[pt.y][pt.x];	
+}
 
-
+point level_get_opponent() {
+	
+}
