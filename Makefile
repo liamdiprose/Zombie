@@ -1,14 +1,38 @@
+# Zombie Survival Makefile
+# Liam Diprose and Jeremy Craig
+#
+# TODO: Stuff about the makefile: targets etc
+#
+
+
+# Target file, without extention. i.e.  $(TARGET).c
+TARGET = main
+
+# Optimisation, s for compiled size optimisation
+OPTIMISATION = s
+
+# MCU to compile for/flash
+MMCU = atmega32u2
 
 # Definitions.
 CC = avr-gcc
+<<<<<<< HEAD
 CFLAGS = -mmcu=atmega32u2 -Ofast -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Igame
+=======
+CFLAGS += -mmcu=$(MMCU)
+CFLAGS += -O$(OPTIMISATION)
+CFLAGS += -Wall
+CFLAGS += -Wstrict-prototypes
+CFLAGS += -Wextra -g -I. -Idrivers -Iutils
+
+>>>>>>> refs/remotes/origin/communication
 OBJCOPY = avr-objcopy
 SIZE = avr-size
 DEL = rm
 
 
 # Default target.
-all: main.out
+all: $(TARGET).out
 
 
 # Compile: create object files from C source files.
@@ -72,8 +96,8 @@ main.out: main.o pio.o system.o timer.o led.o pacer.o draw.o ledmat.o event_mana
 
 
 # Create hex file for programming from executable file.
-main.hex: main.out
-	$(OBJCOPY) -O ihex main.out main.hex
+$(TARGET).hex: $(TARGET).out
+	$(OBJCOPY) -O ihex $(TARGET).out $(TARGET).hex
 
 
 # Target: clean project.
@@ -84,7 +108,7 @@ clean:
 
 # Target: program project.
 .PHONY: program
-program: main.hex
-	dfu-programmer atmega32u2 erase --force; dfu-programmer atmega32u2 flash main.hex; dfu-programmer atmega32u2 start
+program: $(TARGET).hex
+	dfu-programmer $(MMCU) erase --force; dfu-programmer $(MMCU) flash $(TARGET).hex; dfu-programmer $(MMCU) start
 
 

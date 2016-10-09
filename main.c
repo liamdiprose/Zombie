@@ -25,12 +25,10 @@ void initilization(void){
      // is_server or is_host
      // level_data
      // zombie positions
-
      // init
      // players init(players)
      // level_init(level_layout)
      // heartbeat_init(player[].health)
-
      // Initilizes the screen_display
      
     system_init ();
@@ -39,6 +37,7 @@ void initilization(void){
      player_init (players);
      heartbeat_init ();
 }
+
 
 void run_host(void){
     event_t events[] =
