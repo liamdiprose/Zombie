@@ -12,11 +12,14 @@
 #define DISPLAY_H
 
 #include "system.h"
+#include "level.h"
+#include "point.h"
+#include "player.h"
 
 #define DISPLAY_WIDTH LEDMAT_COLS_NUM
 #define DISPLAY_HEIGHT LEDMAT_ROWS_NUM
 
-#define STEPS_OF_BRIGHTNESS 40
+#define STEPS_OF_BRIGHTNESS 30
 
 #define PULSE_MAX 15
 
@@ -24,32 +27,24 @@
     @param col pixel column (0 left)
     @param row pixel row (0 top)
     @param val pixel state.  */
+
+void display_set_camera(void *data);
+void display_set_player(void *data);
 void display_pixel_set (uint8_t col, uint8_t row, bool val);
 
-
-/** Get state of a display pixel.
-    @param col pixel column (0 left)
-    @param row pixel row (0 top)
-    @return pixel state or zero if outside display.  */
-bool display_pixel_get (uint8_t col, uint8_t row);
-
+void display_convert_level(char level_data[][LEVEL_WIDTH]);
 
 /** Update display (perform refreshing).  */
 uint8_t display_update (void);
 
-
 /** Clear display.   */
 void display_clear (void);
-
 
 /** Initialise display.   */
 void display_init (void);
 
 /** Update display.   */
 void display_pulse(void *data);
-
-/** getmap display.   */
-void display_setmap(__unused__ uint8_t data[][DISPLAY_HEIGHT]);
 
 /** Draw display.   */
 void display_draw(void *data);
