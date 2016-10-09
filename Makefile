@@ -61,7 +61,6 @@ level.o: game/level.c drivers/system.h game/draw.h game/player.h game/level.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 player.o: game/player.c drivers/system.h drivers/navswitch.h game/point.h game/player.h
-	$(CC) -c $(CFLAGS) $< -o $@
 
 
 

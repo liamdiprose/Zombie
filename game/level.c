@@ -21,5 +21,4 @@ void level_init(char data[][LEVEL_WIDTH]){
         }
     }
 
-
 }

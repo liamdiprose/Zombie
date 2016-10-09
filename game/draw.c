@@ -63,7 +63,7 @@ void display_convert_level(char level_data[][LEVEL_WIDTH]){
             switch(level_data[camera.y + y][camera.x + x]){
                 case WALL_CHAR:
                     screen_data[y][x] = WALL_VALUE;
-                    break;
+                break;
                 case EMPTY_CHAR:
                     screen_data[y][x] = EMPTY_VALUE;
                 break;

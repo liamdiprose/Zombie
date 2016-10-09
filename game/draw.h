@@ -28,8 +28,13 @@
     @param row pixel row (0 top)
     @param val pixel state.  */
 
+<<<<<<< HEAD:game/draw.h
 void display_set_camera(void *data);
 void display_set_player(void *data);
+=======
+void display_set_camera(point position);
+void display_set_player(player *players);
+>>>>>>> 80b432be3a54b6755150eed4a48d6ce5090959ac:drivers/display.h
 void display_pixel_set (uint8_t col, uint8_t row, bool val);
 
 void display_convert_level(char level_data[][LEVEL_WIDTH]);
