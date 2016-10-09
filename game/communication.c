@@ -57,68 +57,43 @@ void wait_for_serial(uint8_t timeout) {
 	}
 }
 
-// Calculate checksum for a zombie structure
-uint8_t zombie_checksum(Zombie zombie) {
-		return zombie.x + zombie.y;
+// Calculate checksum for a point structure
+uint8_t point_checksum(point pt) {
+		return pt.x + pt.y;
 }
 
-// Send one zombie to IR uart
-void send_zombie(Zombie zombie) {
+// Send one point to IR uart
+void send_point(point pt) {
 		uint8_t recv_chksum = 0;
-		uint8_t real_chksum = zombie_checksum(zombie)
+		uint8_t real_chksum = point_chksum(pt)
 
-		while (recv_chksum != real_chksum) {
-				// Send Zombies x co-ordinate
-				ir_uart_putc(zombie.x);
-				// Send Zombies y co-ordinate 
-				ir_uart_putc(zombie.y);
-                wait_for_serial(CLIENT_RESPONSE_TIMEOUT);
-				// Wait for response checksum
-				if (ir_uart_read_ready_p()) {
-					   recv_chksum = ir_uart_getc();
-				}
-		return;
+		// Send Zombies x co-ordinate
+		ir_uart_putc(pt.x);
+		// Send Zombies y co-ordinate 
+		ir_uart_putc(pt.y);
 }
 
 
-Zombie* recv_zombie(void) {
-        Zombie* new_zombie = NULL;
+point recv_point(void) {
+       	point new_pt;
         uint8_t recv_chksum = 0;
         uint8_t real_chksum = 1;
 
-        while (real_chksum != recv_checksum) {
-
                 wait_for_serial(SERVER_WAIT_TIMEOUT);
                 if (ir_uart_read_ready_p() ) {
-                        new_zombie->x = ir_uart_getc();
-                } else {
-                   // Timeout occured
-                    continue;
-                }
+                        new_pt->x = ir_uart_getc();
+				else {
 
-                wait_for_serial(SERVER_WAIT_TIMEOUT);
-                if (ir_uart_read_ready_p() ) {
-                    new_zombie->y = ir_uart_getc();
-                } else {
-                        continue;
-                }
+                recv_chksum = pt_checksum(*new_pt);
 
-                recv_chksum = zombie_checksum(*new_zombie);
-
-                wait_for_serial(SERVER_WAIT_TIMEOUT);
-                if (ir_uart_read_ready_p()) {
-                    real_chksum = ir_uart_getc();
-                } else {
-                    continue;
-                }
         }
-        return new_zombie;
+        return new_pt;
 }
 
 
-void send_zombies(Zombie* zombies, uint8_t num_zombies) {
-	for (uint8_t i = 0; i < num_zombies; i++) {
-			send_zombie(zombies[i]);
+void send_points(Zombie* pts, uint8_t num_pts) {
+	for (uint8_t i = 0; i < num_pts; i++) {
+			send_point(pts[i]);
 	}
 }
 

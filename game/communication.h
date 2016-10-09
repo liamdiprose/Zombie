@@ -5,11 +5,13 @@
 // Initilise communication
 void communication_init(void);
 
+bool comm_setup_protocol();
+
 // Calculate checksum to identify incorrect transmission
-uint8_t zombie_checksum(Zombie zombie);
+uint8_t point_checksum(point pt);
 
 // Attempt to send zombie, returns SEND_FAIL on failure
-uint8_t send_zombie(Zombie zombie);
+uint8_t point(point pt);
 
 // Attempt to recevie zombie
 Zombie* recv_zombie(void);
