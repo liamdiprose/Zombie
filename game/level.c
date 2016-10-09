@@ -20,3 +20,7 @@ void level_init(char data[][LEVEL_WIDTH]){
     }*/
 
 }
+
+char level_get_point(point pt) {
+
+
