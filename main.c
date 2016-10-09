@@ -28,7 +28,7 @@ void initilization(void){
      
      system_init ();
      display_init ();
-     level_init (level_data);
+     level_init ();
      player_init (players);
      heartbeat_init ();
      comm_init();

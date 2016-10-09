@@ -5,7 +5,7 @@
 
 char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
 
-void level_init(char data[][LEVEL_WIDTH]){
+void level_init(){
     /*int x; int y;
     for (x = 0; x < LEVEL_WIDTH; x++){
         for (y = 0; y < LEVEL_WIDTH; y++){

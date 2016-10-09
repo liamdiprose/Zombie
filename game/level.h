@@ -19,7 +19,7 @@
 #define ZOMBIE_VALUE 50
 
 
-void level_init(char data[][LEVEL_WIDTH]);
+void level_init();
 
 // Get the thing at the point
 char level_get_point(point pt);
