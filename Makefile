@@ -16,16 +16,7 @@ MMCU = atmega32u2
 
 # Definitions.
 CC = avr-gcc
-<<<<<<< HEAD
 CFLAGS = -mmcu=atmega32u2 -Ofast -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Igame
-=======
-CFLAGS += -mmcu=$(MMCU)
-CFLAGS += -O$(OPTIMISATION)
-CFLAGS += -Wall
-CFLAGS += -Wstrict-prototypes
-CFLAGS += -Wextra -g -I. -Idrivers -Iutils
-
->>>>>>> refs/remotes/origin/communication
 OBJCOPY = avr-objcopy
 SIZE = avr-size
 DEL = rm

@@ -11,12 +11,6 @@
 
 bool is_host = true;
 
-player     players[2];
-void*      players_ptr = &players;
-
-char       level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
-void*      level_data_ptr = &level_data[0];
-
 void initilization(void){
     //TODO: REORGANISE COMMUNICATION AND MANAGEMENT
      // ADD : game variables
@@ -47,13 +41,13 @@ void run_host(void){
          // read input from host and client
          // update zombies
          // update player
-         {.func = player_update,            .period = 1000,     .data = players_ptr},
+         {.func = player_update,            .period = 1000,     .data = players},
          // send data to client
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
-         {.func = display_set_camera,       .period = 200,      .data = players_ptr},
-         {.func = display_convert_level,    .period = 400,      .data = level_data_ptr},
-         {.func = display_set_player,       .period = 200,      .data = players_ptr},
+         {.func = display_set_camera,       .period = 200,      .data = players},
+         {.func = display_convert_level,    .period = 400,      .data = level_data},
+         {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
          
          // for client
@@ -76,13 +70,13 @@ void run_client(void){
          // read input from host and client
          // update zombies
          // update player
-         {.func = player_update,            .period = 1000,     .data = players_ptr},
+         {.func = player_update,            .period = 1000,     .data = players},
          // send data to client
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
-         {.func = display_set_camera,       .period = 200,      .data = players_ptr},
-         {.func = display_convert_level,    .period = 400,      .data = level_data_ptr},
-         {.func = display_set_player,       .period = 200,      .data = players_ptr},
+         {.func = display_set_camera,       .period = 200,      .data = players},
+         {.func = display_convert_level,    .period = 400,      .data = level_data},
+         {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
          
          // for client
