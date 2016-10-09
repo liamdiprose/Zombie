@@ -54,21 +54,21 @@ void display_set_player(void *data)
     screen_data[new_position.y][new_position.x] = PLAYER_VALUE;
 }
 
-void display_convert_level(char level_data[][LEVEL_WIDTH]){
+void display_convert_level(void){
     register int x;
     register int y;
     
     for (x = 0; x < DISPLAY_WIDTH; x++){
         for (y = 0; y < DISPLAY_HEIGHT; y++){
-            screen_data[y][x] = 0;
+            screen_data[y][x] =EMPTY_VALUE;
+            point current_position = (point){.x=camera.x + x, .y=camera.y + y};
+            char current_char = level_get_point(current_position);
             
-            switch(level_data[camera.y + y][camera.x + x]){
-                case EMPTY_CHAR:
-                    screen_data[y][x] = EMPTY_VALUE;
-                break;
-                case BACKGROUND_CHAR:
+            if ((current_position.x%4) == 0 && (current_position.y%4) == 0 ){
                     screen_data[y][x] = BACKGROUND_VALUE;
-                break;
+            }
+
+            switch(current_char){
                 case PLAYER_CHAR:
                     screen_data[y][x] = PLAYER_VALUE;
                 break;
@@ -77,13 +77,11 @@ void display_convert_level(char level_data[][LEVEL_WIDTH]){
                 break;
                 
             }
-            if ((camera.y + y%4) == 0 && (camera.x + x%4) == 0){
-                    screen_data[y][x] = BACKGROUND_CHAR;
-            }
-            if (camera.x + x == 0 || camera.x + x == LEVEL_WIDTH-1){
+            
+            if (current_position.x == 0 || current_position.x == LEVEL_WIDTH-1){
                 screen_data[y][x] = WALL_VALUE;
             }
-            if (camera.y + y == 0 || camera.y + y == LEVEL_HEIGHT-1){
+            if (current_position.y == 0 || current_position.y == LEVEL_HEIGHT-1){
                 screen_data[y][x] = WALL_VALUE;
             }
             

@@ -101,5 +101,3 @@ clean:
 .PHONY: program
 program: $(TARGET).hex
 	dfu-programmer $(MMCU) erase --force; dfu-programmer $(MMCU) flash $(TARGET).hex; dfu-programmer $(MMCU) start
-
-

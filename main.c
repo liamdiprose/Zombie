@@ -46,7 +46,7 @@ void run_host(void){
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
          {.func = display_set_camera,       .period = 200,      .data = players},
-         {.func = display_convert_level,    .period = 400,      .data = level_data},
+         {.func = display_convert_level,    .period = 400,      .data = 0},
          {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
          
@@ -75,7 +75,7 @@ void run_client(void){
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
          {.func = display_set_camera,       .period = 200,      .data = players},
-         {.func = display_convert_level,    .period = 400,      .data = level_data},
+         {.func = display_convert_level,    .period = 400,      .data = 0},
          {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
          

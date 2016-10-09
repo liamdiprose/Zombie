@@ -30,9 +30,10 @@
 
 void display_set_camera(void *data);
 void display_set_player(void *data);
+
 void display_pixel_set (uint8_t col, uint8_t row, bool val);
 
-void display_convert_level(char level_data[][LEVEL_WIDTH]);
+void display_convert_level(void);
 
 /** Update display (perform refreshing).  */
 uint8_t display_update (void);
