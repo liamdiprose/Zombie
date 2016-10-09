@@ -14,9 +14,12 @@ OPTIMISATION = s
 # MCU to compile for/flash
 MMCU = atmega32u2
 
+# C Standard
+cstd = c99
+
 # Definitions.
 CC = avr-gcc
-CFLAGS = -mmcu=atmega32u2 -Ofast -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Igame
+CFLAGS = -mmcu=atmega32u2 -Ofast -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Igame -std=$(cstd)
 OBJCOPY = avr-objcopy
 SIZE = avr-size
 DEL = rm
