@@ -160,7 +160,7 @@ void display_pulse(__unused__ void *data){
         }
     }else{
         current_pulse_value--;
-        if (current_pulse_value <= 1){
+        if (current_pulse_value <= 0){
             is_pulse_fade_in= true;
         }
     }
