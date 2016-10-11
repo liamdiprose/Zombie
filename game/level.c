@@ -1,25 +1,19 @@
 #include "system.h"
 #include "level.h"
 #include "point.h"
-
+#include "player.h"
 
 char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
 
-void level_init(char data[][LEVEL_WIDTH])
+void level_init()
 {
-    /*int x; int y;
-       for (x = 0; x < LEVEL_WIDTH; x++){
-       for (y = 0; y < LEVEL_WIDTH; y++){
+       for (uint8_t x = 0; x < LEVEL_WIDTH; x++){
+			   for (uint8_t y = 0; y < LEVEL_WIDTH; y++){
 
-       if ((y%4) == 0 && (x%4) == 0){
-       data[y][x] = BACKGROUND_CHAR;
-       } else {
-       data[y][x] = EMPTY_CHAR;
-       }
+			   level_data[y][x] = LEVEL_EMPTY;
 
-
-       }
-       } */
+			   }
+       } 
 
 }
 
@@ -39,19 +33,18 @@ point level_get_opponent()
 
 }
 
-void level_move(point start, point dest)
+void level_move(point start, int8_t dest_x, int8_t dest_y)
 {
-    level_set_point(dest, level_get_point(start));
-    level_set_point(start, LEVEL_NULL);
+	level_data[start.y][start.x] = LEVEL_EMPTY;
+	level_data[dest_y][dest_x] = LEVEL_ZOMBIE;
 }
 
 // 
-bool nav_try_move(point pt, int8_t delta_x, int8_t delta_y)
+bool nav_try_move(point pt, int8_t dx, int8_t dy)
 {
-    point canditate =
-        (point) { zombie_pos.y + delta_y, zombie_pos.x + delta_x };
+    point canditate = {pt.x + dx, pt.y + dy};
     if (level_get_point(canditate) == LEVEL_EMPTY) {
-        level_move(zombie_pos, canditate);
+        level_move(pt, canditate.x, canditate.y);
         return true;
     } else {
         return false;
@@ -62,38 +55,46 @@ bool nav_try_move(point pt, int8_t delta_x, int8_t delta_y)
 // Move a single zombie towards the player. Do not move if cannot move closer in x or y direction.
 void nav_move_zombie(point zombie_pos, point player_pos)
 {
-    // 1. If difference in x is more than difference in y
-    bool attempted_sideways_move = false;
+	bool attempted_sideways_move = false;
     bool has_moved = false;
-    if (abs(zombie_pos.x - player_pos.x) >
-        abs(zombie_pos.y - player_pos.y)) {
-        // 2. Try move the zombie laterlly
-        if (zombie_pos.x > player_pos.x) {
-            // Try move zombie to the left 
-            has_moved = nav_try_move(zombie_pos, NAV_LEFT);
+	
+	point difference = {zombie_pos.x - player_pos.x, zombie_pos.y - player_pos.y};
+    if (abs(difference.x) > abs(difference.y)) {
+		// Try move sideways first 
+        if (difference.x > 0) {
+			// left
+           // has_moved = nav_try_move(zombie_pos, (point) {-1, 0});
+            has_moved = nav_try_move(zombie_pos, -1, 0);
         } else {
-            has_moved = nav_try_move(zombie_pos, NAV_RIGHT);
+			// right
+            //has_moved = nav_try_move(zombie_pos, (point) {1, 0});
+            has_moved = nav_try_move(zombie_pos, 1, 0);
         }
         attempted_sideways_move = true;
     }
     if (!has_moved) {
-        // Try move zombie up or down, 
-        if (zombie_pos.y > player_pos.y) {
-            // Try move zombie to the left 
-            has_moved = nav_try_move(zombie_pos, NAV_DOWN);
+        // Try move zombie up or down, if above failed or difference.y is greater 
+        if (difference.y > 0) {
+			// down
+//            has_moved = nav_try_move(zombie_pos, (point) {0, 1});
+            has_moved = nav_try_move(zombie_pos, 0, -1);
         } else {
-            has_moved = nav_try_move(zombie_pos, NAV_UP);
+			// up
+//            has_moved = nav_try_move(zombie_pos, (point) {0, -1});
+            has_moved = nav_try_move(zombie_pos, 0, 1);
         }
 
     }
-    // TODO: Repeated code 
     if (!has_moved && !attempted_sideways_move) {
-        // Attempt sideways move again
-        if (zombie_pos.x > player_pos.x) {
-            // Try move zombie to the left 
-            has_moved = nav_try_move(zombie_pos, NAV_LEFT);
+		// Move left or right if hasnt tried yet, and moving up/down failed
+        if (difference.x > 0) {
+			// left
+           // has_moved = nav_try_move(zombie_pos, (point) {-1, 0});
+            has_moved = nav_try_move(zombie_pos, -1, 0);
         } else {
-            has_moved = nav_try_move(zombie_pos, NAV_RIGHT);
+			// right
+            //has_moved = nav_try_move(zombie_pos, (point) {1, 0});
+            has_moved = nav_try_move(zombie_pos, 1, 0);
         }
     }
 }
@@ -101,18 +102,18 @@ void nav_move_zombie(point zombie_pos, point player_pos)
 
 // Update a group of zombies (TODO: group unsed for the time being, only if we need to 
 // break up the execusion of this potienttally CPU-hog of a function
-void nav_update_zombie_group(uint8_t group, point player_pos)
+void nav_update_zombie_group(void* data)
 {
     // TODO: Implementups
-    for (uint8_t row = 0; row < LEVEL_WIDTH; row++) {
-        for (uint8_t col = 0; col < LEVEL_HEIGHT; col++) {
-            if (level_get_point((point) {
-                                col, row}
-                ) == LEVEL_ZOMBIE) {
-                nav_move_zombie((point) {
-                                col, row}
-                                , player_pos);
-            }
+	player* players = data;
+	point player_pos = players[0].position;
+    for (int8_t row = 0; row < LEVEL_HEIGHT; row++) {
+        for (int8_t col = 0; col < LEVEL_WIDTH; col++) {
+			if (level_data[row][col] == LEVEL_ZOMBIE) {
+                nav_move_zombie((point) {col, row}, player_pos);
+			}
+//            if (level_get_point( (point) {col, row}) == LEVEL_ZOMBIE) {
+//            }
         }
     }
 }

@@ -23,8 +23,8 @@
 // TODO: Confirm these directions
 #define NAV_LEFT  -1, 0
 #define NAV_RIGHT 1, 0
-#define NAV_UP 0, -1
-#define NAV_DOWN 0, 1
+#define NAV_UP 0, 1
+#define NAV_DOWN 0, -1
 
 
 void level_init();
@@ -33,7 +33,7 @@ void level_init();
 char level_get_point(point pt);
 
 // Move zombie in direction if free space
-bool nav_try_move(point pt, int8_t dx, int8_t dy);
+bool nav_try_move(point pt, int8_t delta_x, int8_t delta_y);
 
 // Try move zombie closer to the player
 void nav_move_zombie(point zombie_location, point player_location);
