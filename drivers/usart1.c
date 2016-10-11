@@ -98,3 +98,8 @@ usart1_puts (const char *str)
     while (*str)
         usart1_putc (*str++);
 }
+
+
+void usart1_putc_noblock(char ch)
+{
+

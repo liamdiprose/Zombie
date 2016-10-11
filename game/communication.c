@@ -1,12 +1,19 @@
 #include "ir_uart.h"
 #include "communication.h"
 #include "pacer.h"
+#include "point.h"
+#include "player.h"
 
 #define CLIENT_RESPONSE_TIMEOUT 250
 #define SETUP_LISTEN_FOR_SERVER_TIME
 #define PROTOCOL_SERVER 's'
 #define PROTOCOL_CLIENT 'c'
 #define PACER_RATE 500
+
+
+
+
+
 // Initiate IR for communication
 void comm_init() {
 		ir_uart_init();
@@ -63,10 +70,33 @@ void send_point(point pt) {
 }
 
 point recv_point() {
-		point ret = {0, 0};
+		point ret = {.x = 0, .y = 0};
+		char received_char;
 
-		ret.x = ir_uart_getc();
-		ret.y = ir_uart_getc();
+		received_char = ir_uart_getc();
+		if (received_char >= 0 && received_char < 128) {
+			   ret.x = received_char;	
+		}
+		received_char = ir_uart_getc();
+		if (received_char >= 0 && received_char < 128) {
+			   ret.y = received_char;	
+		}
+		return ret;
 }
 
+// Server only method for sending zombie locations
+void update_client(__unused__ void* data) {
+	//1. Send server's player's position
+	//2. Send number of zombies to send
+	//3. Send zombies (as locations)
+	
+	send_point(players[0].position);
 
+}	
+
+	
+void receive_server(__unused__ void* data) {
+		if (ir_uart_read_ready_p() ) {
+				players[1].position = recv_point() ;
+		}
+}
