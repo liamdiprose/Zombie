@@ -34,6 +34,8 @@ void run_host(void){
     	
 
 		level_set_point((point){4, 4}, LEVEL_ZOMBIE);
+        level_set_point((point){6, 6}, LEVEL_ZOMBIE);
+        level_set_point((point){10, 10}, LEVEL_ZOMBIE);
 		
 		event_t events[] =
 
@@ -80,7 +82,7 @@ void run_client(void){
          {.func = display_convert_level,    .period = 400,      .data = 0},
          {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
-		 {.func = nav_update_zombie_group,	.period = 10000,		.data = players},         
+		 {.func = nav_update_zombie_group,	.period = 22000,		.data = players},         
          // for client
          // read input from client
          // read data from server
