@@ -3,7 +3,6 @@
 
 #include "system.h"
 #include "point.h"
-#include "player.h"
 
 typedef struct {
    point position;

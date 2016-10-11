@@ -6,6 +6,7 @@
 #include "point.h"
 #include "pacer.h"
 
+
 void player_init(player players[]){
      players[0].position.x = 2;
      players[0].position.y = 2;

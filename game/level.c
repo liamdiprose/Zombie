@@ -4,6 +4,8 @@
 #include "player.h"
 
 char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
+uint8_t p1_updated_zombies = 0;
+
 
 void level_init()
 {

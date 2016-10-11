@@ -89,14 +89,14 @@ void update_client(__unused__ void* data) {
 	//1. Send server's player's position
 	//2. Send number of zombies to send
 	//3. Send zombies (as locations)
-	
+	if (player_moved) {	
 	send_point(players[0].position);
-
+	}
 }	
 
 	
 void receive_server(__unused__ void* data) {
 		if (ir_uart_read_ready_p() ) {
-				players[1].position = recv_point() ;
+				players[0].position = recv_point() ;
 		}
 }

@@ -100,6 +100,4 @@ usart1_puts (const char *str)
 }
 
 
-void usart1_putc_noblock(char ch)
-{
 
