@@ -4,124 +4,69 @@
 
 #define CLIENT_RESPONSE_TIMEOUT 250
 #define SETUP_LISTEN_FOR_SERVER_TIME
-#define SERVER_CHAR 's'
-#define SETUP_LOOP_PACE 2
+#define PROTOCOL_SERVER 's'
+#define PROTOCOL_CLIENT 'c'
+#define PACER_RATE 500
 // Initiate IR for communication
 void comm_init() {
 		ir_uart_init();
 }
 
 
-bool comm_setup_protocol() {
-		// 1. Listen for a server for 1 second roughly
-		// 2. Become a server and broadcast stuff
-		
-		uint16_t listen_count = 0;
-		pacer_init(SETUP_LOOP_PACE);
 
-		for (listen_count = 0; listen_count < SETUP_LISTEN_FOR_SERVER_TIME; listen_count++) {
+// Find a server that is advertising a game
+bool protocol_find_server(uint8_t timeout) {
+		uint8_t count = 0;
+		bool server_found = false;
+		pacer_init(PACER_RATE);
+		while (count < timeout) {
+				pacer_wait();
 				if (ir_uart_read_ready_p()) {
-						if (ir_uart_getc() == SERVER_CHAR) {
-							return false;
-						}
-
-				}
-		}
-		// Failed to find server, becoming server
-		// TODO: Change LED from blinking to solid
-
-		while (1) {
-			// 1. Send char
-			// 2. Wait a for a bit
-			// 3. If ready, read incoming, for 'c'
-			// 4. If yes, return True, else, false				
-
-			ir_uart_putc_nocheck(SERVER_CHAR);
-			pacer_wait();
-			if (ir_uart_read_ready_p() ) {
-					if (ir_uart_getc() == PROTOCOL_CLIENT) {
+						if (ir_uart_getc() == PROTOCOL_SERVER) {
+							ir_uart_putc(PROTOCOL_CLIENT);
 							return true;
+						}
+				}
+			count ++ ;
+		}
+		return false;
+}
+
+// Advertise a server forever
+void protocol_server_advertise() {
+		pacer_init(500);
+		while (1) {
+			ir_uart_putc(PROTOCOL_SERVER);	
+
+			pacer_wait();
+			if (ir_uart_read_ready_p()) {
+					if (ir_uart_getc() == PROTOCOL_CLIENT) {
+							return;
 					}
 			}
 		}
 }
 
-
-// Wait for serial to be ready, or timeout
-uint8_t wait_count = 0;
-void wait_for_serial(uint8_t timeout) {
-	while (!ir_uart_read_ready_p() || wait_count > timeout) {
-		_delay_ms(10);
-		wait_count++;
-	}
+// Find out who is server and who is client
+bool protocol_init() {
+		if (protocol_find_server(254)) {
+				return false; // Found server
+		} else {
+				protocol_server_advertise();
+				return true;
+		}
 }
 
-// Calculate checksum for a zombie structure
-uint8_t zombie_checksum(Zombie zombie) {
-		return zombie.x + zombie.y;
+void send_point(point pt) {
+		ir_uart_putc(pt.x);
+		ir_uart_putc(pt.y);
 }
 
-// Send one zombie to IR uart
-void send_zombie(Zombie zombie) {
-		uint8_t recv_chksum = 0;
-		uint8_t real_chksum = zombie_checksum(zombie)
+point recv_point() {
+		point ret = {0, 0};
 
-		while (recv_chksum != real_chksum) {
-				// Send Zombies x co-ordinate
-				ir_uart_putc(zombie.x);
-				// Send Zombies y co-ordinate 
-				ir_uart_putc(zombie.y);
-                wait_for_serial(CLIENT_RESPONSE_TIMEOUT);
-				// Wait for response checksum
-				if (ir_uart_read_ready_p()) {
-					   recv_chksum = ir_uart_getc();
-				}
-		return;
+		ret.x = ir_uart_getc();
+		ret.y = ir_uart_getc();
 }
-
-
-Zombie* recv_zombie(void) {
-        Zombie* new_zombie = NULL;
-        uint8_t recv_chksum = 0;
-        uint8_t real_chksum = 1;
-
-        while (real_chksum != recv_checksum) {
-
-                wait_for_serial(SERVER_WAIT_TIMEOUT);
-                if (ir_uart_read_ready_p() ) {
-                        new_zombie->x = ir_uart_getc();
-                } else {
-                   // Timeout occured
-                    continue;
-                }
-
-                wait_for_serial(SERVER_WAIT_TIMEOUT);
-                if (ir_uart_read_ready_p() ) {
-                    new_zombie->y = ir_uart_getc();
-                } else {
-                        continue;
-                }
-
-                recv_chksum = zombie_checksum(*new_zombie);
-
-                wait_for_serial(SERVER_WAIT_TIMEOUT);
-                if (ir_uart_read_ready_p()) {
-                    real_chksum = ir_uart_getc();
-                } else {
-                    continue;
-                }
-        }
-        return new_zombie;
-}
-
-
-void send_zombies(Zombie* zombies, uint8_t num_zombies) {
-	for (uint8_t i = 0; i < num_zombies; i++) {
-			send_zombie(zombies[i]);
-	}
-}
-
-
-
 
 

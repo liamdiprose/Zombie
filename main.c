@@ -33,7 +33,7 @@ void initilization(void){
      heartbeat_init ();
      comm_init();
 
-     is_host = comm_setup_protocol(); 
+     is_host = protocol_init();
 }
 
 
@@ -88,7 +88,7 @@ void run_client(void){
          // read data from server
          // draw game
          // send data to host
-         {.func = heartbeat_task,   .period = 6400,     .data = 0}, // included for proof of concept
+//         {.func = heartbeat_task,   .period = 6400,     .data = 0}, // included for proof of concept
      };
      
 

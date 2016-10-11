@@ -78,7 +78,7 @@ level.o: game/level.c drivers/system.h game/draw.h game/player.h game/level.h
 player.o: game/player.c drivers/system.h drivers/navswitch.h game/point.h game/player.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-communication.o: game/communication.c drivers/system.h drivers/navswitch.h game/point.h game/communication.h driver/ir_uart.h driver/pacer.h
+communication.o: game/communication.c drivers/system.h drivers/navswitch.h game/point.h game/communication.h drivers/ir_uart.h drivers/pacer.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 # Link: create output file (executable) from object files.
@@ -101,4 +101,4 @@ clean:
 # Target: program project.
 .PHONY: program
 program: $(TARGET).hex
-	dfu-programmer $(MMCU) erase --force; dfu-programmer $(MMCU) flash $(TARGET).hex; dfu-programmer $(MMCU) start
+	dfu-programmer $(MMCU) erase; dfu-programmer $(MMCU) flash $(TARGET).hex; dfu-programmer $(MMCU) start
