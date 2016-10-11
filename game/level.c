@@ -37,6 +37,9 @@ void level_move(point start, int8_t dest_x, int8_t dest_y)
     for (uint8_t player_id =0; player_id <= 2; player_id++){
         if (player_get_position(player_id).x == dest_x && player_get_position(player_id).y == dest_y){
             hit_player = true;
+            if (player_id == 0){
+                player_decrease_health();
+            }
         }
     }
     if (hit_player){

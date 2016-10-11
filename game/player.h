@@ -15,5 +15,7 @@ player     players[2];
 void player_init(player players[]);
 void player_update(void *data);
 point player_get_position(uint8_t id);
+uint8_t player_get_health(void);
+void player_decrease_health(void);
 
 #endif

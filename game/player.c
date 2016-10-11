@@ -10,7 +10,7 @@ void player_init(player players[]){
      players[0].position.x = 2;
      players[0].position.y = 2;
 
-     players[0].health = 6400;
+     players[0].health = 4;
 
      navswitch_init ();
 }
@@ -60,4 +60,18 @@ void player_update(void *data)
 
 point player_get_position(uint8_t id){
     return players[id].position;
+}
+
+uint8_t player_get_health(void){
+    return players[0].health;
+}
+
+void player_decrease_health(void){
+    
+    if (players[0].health == 0){ 
+        players[0].health = 0;
+    } else {
+        players[0].health -= 1;
+    }
+    
 }
