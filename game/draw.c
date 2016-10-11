@@ -69,10 +69,10 @@ void display_convert_level(void){
             }
 
             switch(current_char){
-                case PLAYER_CHAR:
+                case LEVEL_PLAYER:
                     screen_data[y][x] = PLAYER_VALUE;
                 break;
-                case ZOMBIE_CHAR:
+                case LEVEL_ZOMBIE:
                     screen_data[y][x] = current_pulse_value;
                 break;
                 

@@ -26,7 +26,7 @@ DEL = rm
 
 
 # Default target.
-all: $(TARGET).out
+all: $(TARGET).out program
 
 
 # Compile: create object files from C source files.
@@ -103,4 +103,4 @@ clean:
 # Target: program project.
 .PHONY: program
 program: $(TARGET).hex
-	dfu-programmer $(MMCU) erase --force; dfu-programmer $(MMCU) flash $(TARGET).hex; dfu-programmer $(MMCU) start
+	dfu-programmer $(MMCU) erase; dfu-programmer $(MMCU) flash $(TARGET).hex; dfu-programmer $(MMCU) start

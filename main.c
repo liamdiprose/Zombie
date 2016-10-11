@@ -4,10 +4,7 @@
 #include "draw.h"
 #include "event_manager.h"
 #include "heartbeat.h"
-#include "level.h"
-#include "player.h"
-#include "point.h"
-#include "navswitch.h"
+#include "level.h" #include "player.h" #include "point.h" #include "navswitch.h"
 
 bool is_host = true;
 
@@ -26,15 +23,20 @@ void initilization(void){
      // Initilizes the screen_display
      
     system_init ();
-     display_init ();
-     level_init (level_data);
-     player_init (players);
-     heartbeat_init ();
+    display_init ();
+    level_init ();
+    player_init (players);
+    heartbeat_init ();
 }
 
 
 void run_host(void){
-    event_t events[] =
+    	
+
+		level_set_point((point){4, 4}, LEVEL_ZOMBIE);
+		
+		event_t events[] =
+
      {
          
          // for host
@@ -49,7 +51,7 @@ void run_host(void){
          {.func = display_convert_level,    .period = 400,      .data = 0},
          {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
-         
+		 {.func = nav_update_zombie_group,	.period = 10000, 	.data = players}, 
          // for client
          // read input from client
          // read data from server
@@ -59,7 +61,7 @@ void run_host(void){
      };
      
 
-     event_manager (events, 7);
+     event_manager (events, 8);
 }
 
 void run_client(void){
@@ -78,7 +80,7 @@ void run_client(void){
          {.func = display_convert_level,    .period = 400,      .data = 0},
          {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
-         
+		 {.func = nav_update_zombie_group,	.period = 10000,		.data = players},         
          // for client
          // read input from client
          // read data from server
@@ -88,7 +90,7 @@ void run_client(void){
      };
      
 
-     event_manager (events, 7);
+     event_manager (events, 8);
 }
 
 
