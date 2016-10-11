@@ -57,3 +57,7 @@ void player_update(void *data)
         return players[0].health; 
     }
 }
+
+point player_get_position(uint8_t id){
+    return players[id].position;
+}

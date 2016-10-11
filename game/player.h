@@ -14,6 +14,6 @@ player     players[2];
 
 void player_init(player players[]);
 void player_update(void *data);
-uint32_t player_get_beat_rate(player players[]);
+point player_get_position(uint8_t id);
 
 #endif
