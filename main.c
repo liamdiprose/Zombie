@@ -52,7 +52,9 @@ void run_host(void){
          // update player
          {.func = player_update,            .period = 1000,     .data = players},
          // send data to client
-		 {.func = update_client, 			.period = 1000, 	.data = 0},
+		 // TODO: Make this part of the player_update function
+		 {.func = update_client,			.period = 1000, 	.data=0},
+		 {.func = send_next_message, 		.period = 500, 		.data = 0},
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
          {.func = display_set_camera,       .period = 200,      .data = players},
@@ -69,7 +71,7 @@ void run_host(void){
      };
      
 
-     event_manager (events, 9);
+     event_manager (events, 10);
 }
 
 void run_client(void){
@@ -88,7 +90,7 @@ void run_client(void){
          {.func = display_convert_level,    .period = 400,      .data = 0},
          {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
-         {.func = receive_server, 		  	.period = 1000,	  .data = 0}, 
+         {.func = update_player_position,	.period = 100,	  	.data = 0}, 
          // for client
          // read input from client
          // read data from server
