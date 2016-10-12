@@ -119,6 +119,8 @@ void protocol_handle_ir_input(char given_message){
                 level_set_zombie(stripped_message, 0);
             }
         }
+        level_set_zombie(1, 0);
+        level_set_zombie(0, 1);
     // is player   
     } else {
         if (stripped_message != 0){
