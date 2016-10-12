@@ -72,7 +72,7 @@ void run_host(void){
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
 		 {.func = nav_update_zombie_group,	.period = 10000, 	.data = players},
          {.func = protocol_get_update,		.period = 50,	  	.data = 0}, 
-         {.func = update_player_abs,		.period = 3000,	  	.data = 0}, 
+         {.func = update_player_abs,		.period = 2000,	  	.data = 0}, 
          // for client
          // read input from client
          // read data from server

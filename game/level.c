@@ -205,10 +205,10 @@ void level_update_client(void * data) {
 		uint8_t col;
 
 		for (col = 0; col < LEVEL_HEIGHT; col++) {
-				for (row = 0; row < LEVEL_WIDTH; row++) {
-                    if (level_data[row][col]){
-                        protocol_send_zombie((point){col, row});
-                    }
-				}
-		}
+			for (row = 0; row < LEVEL_WIDTH; row++) {
+                if (level_data[row][col]){
+                    protocol_send_zombie((point){col, row});
+                }
+		    }
+	    }
 }

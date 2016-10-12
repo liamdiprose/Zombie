@@ -111,6 +111,9 @@ void protocol_handle_ir_input(char given_message){
         //}
 
     // is zombie
+    if ((given_message >> 5) & 1){
+        return;
+    }
     if ((given_message >> BIT_UNIT) & HANDLE_ZOMBIE) {
         if (stripped_message != 0 && !_is_host){
             
@@ -123,7 +126,7 @@ void protocol_handle_ir_input(char given_message){
         }
         
     // is player   
-    } else if ((given_message >> BIT_UNIT) & HANDLE_PLAYER){
+    } else {
         if (stripped_message != 0){
             if ((given_message >> BIT_AXIS) & HANDLE_Y) {
                 players[1].position.y = stripped_message;
