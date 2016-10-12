@@ -22,7 +22,7 @@ bool protocol_init() {
 				return false; // Found server
 		} else {
 				protocol_server_advertise();
-				is_host = true;
+				_is_host = true;
                 return true;
 
 		}
