@@ -86,6 +86,11 @@ void player_update(void *data)
             player_decrease_health();
         }
     }
+
+    if (players[0].health <= 0){
+        has_lost = true;
+        protocol_send_player_y(LEVEL_WIDTH + 3);
+    }
 }
 
 point player_get_position(uint8_t id){
@@ -111,7 +116,7 @@ void player_set_other_player_x(int8_t x_position){
 
 void player_set_other_player_y(int8_t y_position){
     if (y_position > LEVEL_HEIGHT){
-        
+        has_won = true;
     } else {
         players[1].position.y = y_position;
     }

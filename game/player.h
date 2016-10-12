@@ -10,6 +10,8 @@ typedef struct {
 } player;
 
 player     players[2];
+bool has_won = false;
+bool has_lost = false;
 
 void player_init(player players[], bool is_host);
 void player_update(void *data);
