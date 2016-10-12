@@ -48,16 +48,17 @@ void display_set_camera(void *data)
 void display_set_player(void *data)
 {
     player* players = data;
-    point new_position;
-    new_position.x = players[0].position.x - camera.x;
-    new_position.y = players[0].position.y - camera.y;
-    screen_data[new_position.y][new_position.x] = PLAYER_VALUE;
+    point p1_position;
+    p1_position.x = players[0].position.x - camera.x;
+    p1_position.y = players[0].position.y - camera.y;
+    screen_data[p1_position.y][p1_position.x] = PLAYER_VALUE;
 
-    new_position.x = players[1].position.x - camera.x;
-    new_position.y = players[1].position.y - camera.y;
-    if ( new_position.x >= 0 && new_position.x < DISPLAY_WIDTH ){
-        if (  new_position.y >= 0 && new_position.y < DISPLAY_HEIGHT ){
-            screen_data[new_position.y][new_position.x] = PLAYER_VALUE;
+    point p2_position;
+    p2_position.x = players[1].position.x - camera.x;
+    p2_position.y = players[1].position.y - camera.y;
+    if ( p2_position.x >= 0 && p2_position.x < DISPLAY_WIDTH ){
+        if (  p2_position.y >= 0 && p2_position.y < DISPLAY_HEIGHT ){
+            screen_data[p2_position.y][p2_position.x] = PLAYER_VALUE;
         }    
     }
 }
