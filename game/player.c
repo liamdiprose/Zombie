@@ -40,6 +40,10 @@ void player_update(void *data)
         } else {
             players[0].position.y += 1;
         }
+
+        if (level_data[player[0].position.y][player[0].position.x] == LEVEL_ZOMBIE){
+            player_decrease_health();
+        }
 		//comm_mqueue_append(players[0].position.y | 1 << 7); // TODO: Repeated code 
     	//protocol_handle_ir_output(true, false, players[0].position.y);
 	}
@@ -52,7 +56,9 @@ void player_update(void *data)
         }
 		//comm_mqueue_append(players[0].position.x & ~(1 << 7)); //TODO: Repeated code
     	//protocol_handle_ir_output(true, true, players[0].position.x);
-        
+        if (level_data[player[0].position.y][player[0].position.x] == LEVEL_ZOMBIE){
+            player_decrease_health();
+        }
     }
     
     if (navswitch_push_event_p (NAVSWITCH_NORTH)){
@@ -63,6 +69,9 @@ void player_update(void *data)
         }
 		//comm_mqueue_append(players[0].position.y | 1 << 7); // TODO: Repeated code
     	//protocol_handle_ir_output(true, false, players[0].position.y);
+        if (level_data[player[0].position.y][player[0].position.x] == LEVEL_ZOMBIE){
+            player_decrease_health();
+        }
     }
     
     if (navswitch_push_event_p (NAVSWITCH_WEST)){   
@@ -73,10 +82,9 @@ void player_update(void *data)
         }
 		//comm_mqueue_append(players[0].position.x & ~(1 << 7)); // TODO: Repeated code
     	//protocol_handle_ir_output(true, true, players[0].position.x);
-    }
-    
-    uint32_t player_get_beat_rate(player players[]){
-        return players[0].health; 
+        if (level_data[player[0].position.y][player[0].position.x] == LEVEL_ZOMBIE){
+            player_decrease_health();
+        }
     }
 }
 
@@ -95,8 +103,20 @@ void player_decrease_health(void){
     } else {
         players[0].health -= 1;
     }
-    
 }
+
+void player_set_other_player_x(int8_t x_position){
+    players[1].position.x = x_position;
+}
+
+void player_set_other_player_y(int8_t y_position){
+    if (y_position > LEVEL_HEIGHT){
+        
+    } else {
+        players[1].position.y = y_position;
+    }
+}
+
 /*
 void update_player_abs(__unused__ void* data) {
 		protocol_send_player_x(players[0].position.x);

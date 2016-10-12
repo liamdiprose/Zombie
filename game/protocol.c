@@ -179,15 +179,20 @@ void protocol_read_zombie(char message) {
 					level_set_point((point) {last_zombie_x, last_zombie_y} , LEVEL_EMPTY);
 			}
 			level_set_point((point) {x_val, last_zombie_y}, LEVEL_ZOMBIE);
+			if (players[0].position.x == x_val && players[0].position.y == y_val){
+				player_decrease_health(void);
+			}
 		}
 }
 
 
 void protocol_read_player(char message) {
 		if (message_is_y_axis(message)) {
-			players[1].position.y = message_strip(message);
+			//players[1].position.y = message_strip(message);
+			player_set_other_player_y(message_strip(message));
 		} else {
-			players[1].position.x = message_strip(message);
+			//players[1].position.x = message_strip(message);
+			player_set_other_player_x(message_strip(message));
 		}
 }
 
