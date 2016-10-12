@@ -40,7 +40,11 @@ void initilization(void){
 
 void run_host(void){
     	
-		level_set_point((point){1,1}, LEVEL_ZOMBIE);
+        level_set_zombie(0, 2);
+        level_set_zombie(3, 0);
+        level_set_zombie(4, 0);
+        
+		//level_set_point((point){1,1}, LEVEL_ZOMBIE);
 		event_t events[] =
 
      {

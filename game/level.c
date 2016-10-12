@@ -22,6 +22,7 @@ void level_init()
 void level_set_zombie(uint8_t x, uint8_t y){
     static uint8_t previous_x = 0;
     static uint8_t previous_y = 0;
+
     if (y == 0){
 
     } else if (y != previous_y){
