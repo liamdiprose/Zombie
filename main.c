@@ -9,6 +9,7 @@
 #include "point.h"
 #include "navswitch.h"
 #include "communication.h"
+#include "protocol.h"
 
 bool is_host = false;
 
