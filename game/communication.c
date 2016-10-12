@@ -100,8 +100,8 @@ bool protocol_init() {
 
 void send_point(point pt) {
 
-		comm_mqueue_add(3);
-		comm_mqueue_add(131);
+		comm_mqueue_add(pt.x & ~(1 << 7));
+		comm_mqueue_add(pt.y | 1 << 7);
 }
 
 point recv_point() {
@@ -125,9 +125,9 @@ void update_player_position(__unused__ void* data) {
 				char recved = ir_uart_getc();
 				if (recved >> 7) {
 						// y
-						players[0].position.y = recved & ~(1 << 7);
+						players[1].position.y = recved & ~(1 << 7);
 				} else {
-						players[0].position.x = recved & ~(1 << 7);
+						players[1].position.x = recved & ~(1 << 7);
 
 				}
 		}
