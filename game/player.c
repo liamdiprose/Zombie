@@ -101,3 +101,8 @@ void player_decrease_health(void){
     }
     
 }
+
+void update_player_abs(__unused__ void* data) {
+		protocol_send_player_x(players[0].position.x);
+		protocol_send_player_y(players[0].position.y);
+}
