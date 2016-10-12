@@ -6,16 +6,6 @@
 // Initilise communication
 void comm_init(void);
 
-
-// Configure who is server and who is client
-bool protocol_init();
-
-// Search for a server <timeout> times
-bool protocol_find_server(uint8_t timeout);
-
-// Advertise server forever
-void protocol_server_advertise();
-
 // Send a 2D point to IR
 void send_point(point pt);
 
