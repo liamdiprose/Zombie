@@ -85,6 +85,7 @@ void protocol_handle_ir_input(char given_message){
     }
 }
 
+
 void protocol_handle_ir_output(bool is_player, bool is_x, int8_t position_value){
     char to_send = (char)position_value;
     if (!is_player){

@@ -56,6 +56,7 @@ char comm_getc()
 {
     if (ir_uart_read_ready_p()) {
         char recved = ir_uart_getc();
+        return recved;
     }
 }
 
