@@ -156,22 +156,54 @@ void protocol_write_zombie_row(uint8_t new_y)
 }
 
 // Send an x value following a y value
-void protocol_write_zombie_col(uint8_t x_val)
-{
-    char message = x_val;
-    message = message_set_entity(message, false);
-    message = message_set_axis(message, false);
-    message = message_set_board(message, _is_host);
-    comm_mqueue_append(message);
+void protocol_write_zombie_col(uint8_t x_val) {
+		char message = x_val;
+		message = message_set_entity(message, false);
+		message = message_set_axis(message, false);
+		message = message_set_board(message, _is_host);
+		comm_mqueue_append(message);
 }
 
-void protocol_write_zombie(point zombie)
-{
-    if (zombie.y != previous_y) {
-        protocol_write_zombie_row(zombie.y);
-        previous_y = zombie.y;
-    }
-    protocol_write_zombie_col(zombie.x);
+void protocol_write_zombie(point zombie) {
+		if (zombie.y != last_zombie_y) {
+				protocol_write_zombie_row(zombie.y);
+				last_zombie_y = zombie.y;
+		}
+		protocol_write_zombie_col(zombie.x);
+}
+
+void protocol_read_zombie(char message) {
+		// Assuming the entity bit has already been checked for zombie, and not host
+		if (_is_host) {
+				return;
+		}
+		if (message_is_y_axis(message)) {
+				last_zombie_y = message_strip(message);
+				for (int i = 1; i < 4; i++) {
+						level_set_point((point) {i + last_zombie_x, last_zombie_y}, LEVEL_EMPTY);
+				}	
+				last_zombie_x = 0;
+		} else {
+			uint8_t x_val = message_strip(message);
+			for (; last_zombie_x < x_val; ++last_zombie_x) {
+					level_set_point((point) {last_zombie_x, last_zombie_y} , LEVEL_EMPTY);
+			}
+			level_set_point((point) {x_val, last_zombie_y}, LEVEL_ZOMBIE);
+			if (players[0].position.x == x_val && players[0].position.y == y_val){
+				player_decrease_health(void);
+			}
+		}
+}
+
+
+void protocol_read_player(char message) {
+		if (message_is_y_axis(message)) {
+			//players[1].position.y = message_strip(message);
+			player_set_other_player_y(message_strip(message));
+		} else {
+			//players[1].position.x = message_strip(message);
+			player_set_other_player_x(message_strip(message));
+		}
 }
 
 void protocol_read_zombie(char message)
