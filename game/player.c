@@ -41,7 +41,7 @@ void player_update(void *data)
             players[0].position.y += 1;
         }
 
-        if (level_data[player[0].position.y][player[0].position.x] == LEVEL_ZOMBIE){
+        if (level_data[players[0].position.y][players[0].position.x] == LEVEL_ZOMBIE){
             player_decrease_health();
         }
 		//comm_mqueue_append(players[0].position.y | 1 << 7); // TODO: Repeated code 
@@ -56,7 +56,7 @@ void player_update(void *data)
         }
 		//comm_mqueue_append(players[0].position.x & ~(1 << 7)); //TODO: Repeated code
     	//protocol_handle_ir_output(true, true, players[0].position.x);
-        if (level_data[player[0].position.y][player[0].position.x] == LEVEL_ZOMBIE){
+        if (level_data[players[0].position.y][players[0].position.x] == LEVEL_ZOMBIE){
             player_decrease_health();
         }
     }
@@ -69,7 +69,7 @@ void player_update(void *data)
         }
 		//comm_mqueue_append(players[0].position.y | 1 << 7); // TODO: Repeated code
     	//protocol_handle_ir_output(true, false, players[0].position.y);
-        if (level_data[player[0].position.y][player[0].position.x] == LEVEL_ZOMBIE){
+        if (level_data[players[0].position.y][players[0].position.x] == LEVEL_ZOMBIE){
             player_decrease_health();
         }
     }
@@ -82,7 +82,7 @@ void player_update(void *data)
         }
 		//comm_mqueue_append(players[0].position.x & ~(1 << 7)); // TODO: Repeated code
     	//protocol_handle_ir_output(true, true, players[0].position.x);
-        if (level_data[player[0].position.y][player[0].position.x] == LEVEL_ZOMBIE){
+        if (level_data[players[0].position.y][players[0].position.x] == LEVEL_ZOMBIE){
             player_decrease_health();
         }
     }

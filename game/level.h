@@ -28,6 +28,7 @@
 #define NAV_UP 0, -1
 #define NAV_DOWN 0, 1
 
+char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
 
 void level_init();
 

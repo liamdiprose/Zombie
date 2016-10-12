@@ -6,7 +6,6 @@
 #define CLIENT_UPDATE_XPADDING 3        // Proximity of zombies to send to client
 #define CLIENT_UPDATE_YPADDING 4
 
-char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
 uint8_t p1_updated_zombies = 0;
 
 
