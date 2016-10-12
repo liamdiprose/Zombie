@@ -52,7 +52,9 @@
 #include "system.h"
 
 #ifndef IR_UART_BAUD_RATE
-#define IR_UART_BAUD_RATE 2000 
+
+#define IR_UART_BAUD_RATE 3000
+
 #endif
 
 

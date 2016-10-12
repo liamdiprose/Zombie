@@ -17,4 +17,5 @@ point player_get_position(uint8_t id);
 uint8_t player_get_health(void);
 void player_decrease_health(void);
 
+void update_player_abs(__unused__ void* data);
 #endif
