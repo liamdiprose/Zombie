@@ -32,6 +32,8 @@ void level_init();
 // Get the thing at the point
 char level_get_point(point pt);
 
+void level_set_zombie(uint8_t x, uint8_t y);
+
 // Move zombie in direction if free space
 bool nav_try_move(point pt, int8_t dx, int8_t dy);
 
