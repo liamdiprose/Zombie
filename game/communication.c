@@ -4,13 +4,6 @@
 #include "point.h"
 #include "player.h"
 
-#define CLIENT_RESPONSE_TIMEOUT 250
-#define SETUP_LISTEN_FOR_SERVER_TIME
-#define PROTOCOL_SERVER 's'
-#define PROTOCOL_CLIENT 'c'
-#define PACER_RATE 500
-#define NULL 0
-#define MAX_MQUEUE_SIZE 10
 
 typedef struct message_s Message;
 struct message_s {
@@ -67,12 +60,11 @@ void send_point(point pt) {
 void update_player_position(__unused__ void* data) {
 		if (ir_uart_read_ready_p() ) {
 				char recved = ir_uart_getc();
-				if (recved >> 7) {
+				if ((recved >> 7) & 1) {
 						// y
 						players[1].position.y = recved & ~(1 << 7);
 				} else {
 						players[1].position.x = recved & ~(1 << 7);
-
 				}
 		}
 }
