@@ -147,26 +147,32 @@ void nav_move_zombie(point zombie_pos, point player_pos)
     }
 }
 
+uint8_t distance(point a, point b) {
+		return (a.x - b.x)*(a.x - b.x) + (a.y - b.y)*(a.y - b.y);
+}
 
 // Update a group of zombies (TODO: group unsed for the time being, only if we need to 
 // break up the execusion of this potienttally CPU-hog of a function
 void nav_update_zombie_group(void* data)
 {
-    // TODO: Implementups
 	player* players = data;
-	point player_pos = players[0].position;
     for (int8_t row = 0; row < LEVEL_HEIGHT; row++) {
         for (int8_t col = 0; col < LEVEL_WIDTH; col++) {
+			point zombie = {col, row};
 			if (level_data[row][col] == LEVEL_ZOMBIE) {
-                nav_move_zombie((point) {col, row}, player_pos);
-			} else if (level_data[row][col] == LEVEL_ZOMBIE_MOVED){
-                level_data[row][col] = LEVEL_ZOMBIE;
+				if (distance(players[0].position, zombie) < distance(players[1].position, zombie)) {
+   		            nav_move_zombie(zombie, players[0].position);
+				} else {
+					nav_move_zombie(zombie, players[1].position);
+				}
+			} else if (level_get_point(zombie) == LEVEL_ZOMBIE_MOVED){
+                level_set_point(zombie, LEVEL_ZOMBIE);
             }
-//            if (level_get_point( (point) {col, row}) == LEVEL_ZOMBIE) {
-//            }
         }
     }
 }
+
+
 void level_update_client(void * data) {
 		point client_pos = players[1].position;
 		uint8_t x_start = 0;
