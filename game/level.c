@@ -33,7 +33,7 @@ void level_set_zombie(uint8_t x, uint8_t y){
         previous_x = 0;
     }
 
-    if (previous_x == LEVEL_WIDTH){
+    if (previous_x == LEVEL_WIDTH || x == 0){
 
     } else if (x >= previous_x){
         for (uint8_t count = previous_x + 1; count < x; count++){
