@@ -58,7 +58,7 @@ void run_host(void){
          
          // send data to client
 		 // TODO: Make this part of the player_update function
-		 {.func = send_next_message, 		.period = 100, 		.data = 0},
+		 {.func = send_next_message, 		.period = 5, 		.data = 0},
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
          {.func = display_set_camera,       .period = 200,      .data = players},
