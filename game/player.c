@@ -7,7 +7,6 @@
 #include "pacer.h"
 #include "protocol.h"
 // TODO: Move send_point to protocol.c
-#include "communication.h"
 
 bool has_won = false;
 bool has_lost = false;

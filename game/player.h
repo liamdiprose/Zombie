@@ -4,6 +4,7 @@
 #include "system.h"
 #include "point.h"
 
+
 typedef struct {
    point position;
    uint32_t health;
