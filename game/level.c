@@ -3,6 +3,9 @@
 #include "point.h"
 #include "player.h"
 
+#define CLIENT_UPDATE_XPADDING 3   // Proximity of zombies to send to client
+#define CLIENT_UPDATE_YPADDING 4
+
 char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
 uint8_t p1_updated_zombies = 0;
 
@@ -162,4 +165,38 @@ void nav_update_zombie_group(void* data)
 //            }
         }
     }
+}
+
+void level_update_client() {
+		point client_pos = players[1].position;
+		uint8_t x_start = 0;
+		uint8_t y_start = 0;
+		
+		uint8_t x_finish = LEVEL_WIDTH;
+		uint8_t y_finish = LEVEL_HEIGHT;
+
+		// Only send zombies in clients proximity
+		if (client_pos.x > CLIENT_UPDATE_XPADDING) {
+			x_start = client_pos.x - CLIENT_UPDATE_XPADDING;
+		}
+		if (client_pos.x < LEVEL_WIDTH - CLIENT_UPDATE_XPADDING) {
+			x_finish = client_pos.x + CLIENT_UPDATE_XPADDING;
+		}
+
+		if (client_pos.y > CLIENT_UPDATE_YPADDING) {
+			y_start = client_pos.y - CLIENT_UPDATE_YPADDING;
+		}
+		if (client_pos.y < LEVEL_WIDTH - CLIENT_UPDATE_YPADDING) {
+			   y_finish = client_pos.y + CLIENT_UPDATE_YPADDING;	
+		}
+		
+		uint8_t row;
+		uint8_t col;
+
+		for (col = y_start; col < y_end; col++) {
+				// TODO: Send Y level
+				for (row = x_start; row < x_finish; row++) {
+					// TODO: Send Zombie				
+				}
+		}
 }
