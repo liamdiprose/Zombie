@@ -11,8 +11,8 @@ typedef struct {
 
 player     players[2];
 
-void player_init(player players[]);
+void player_init(player players[], bool is_host);
 void player_update(void *data);
-uint32_t player_get_beat_rate(player players[]);
+uint8_t player_get_health(void);
 
 #endif

@@ -29,7 +29,7 @@ void initilization(void){
      system_init ();
      display_init ();
      level_init ();
-     player_init (players);
+     player_init (players, is_host);
      heartbeat_init ();
      comm_init();
 
