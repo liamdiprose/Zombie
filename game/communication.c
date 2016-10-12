@@ -7,7 +7,10 @@
 char message_queue[MAX_MQUEUE_SIZE];
 uint8_t head = 0;
 uint8_t tail = -1;
-int message_count = 0;
+uint8_t message_count = 0;
+
+
+char last_sent_message = 0;
 
 // TODO: change code
 char comm_mqueue_pop()
@@ -45,21 +48,15 @@ void comm_init()
     ir_uart_init();
 }
 
-void send_point(point pt)
-{
-
-    comm_mqueue_append(pt.x & ~(1 << 7));
-    comm_mqueue_append(pt.y | 1 << 7);
-}
-
 char comm_getc()
 {
     if (ir_uart_read_ready_p()) {
         char recved = ir_uart_getc();
-        return recved;
-    }
+	        return recved;
+	}
+	return '\0';
 }
-
+/*
 // Recevie one byte of a position (either x or y), based on the first bit of the register
 void update_player_position(__unused__ void *data)
 {
@@ -73,25 +70,15 @@ void update_player_position(__unused__ void *data)
         }
     }
 }
-
+*/
 //TASK Send the next message in queue iff ir is ready to write
 void send_next_message(__unused__ void *data)
 {
     if (ir_uart_write_ready_p()) {
         if (!comm_mqueue_empty_p()) {
             char message = comm_mqueue_pop();
-            if (message != '\0') {
-                ir_uart_putc(message);
-            }
+			ir_uart_putc(message);
         }
     }
 }
 
-// Server only method for sending zombie locations
-void update_client(__unused__ void *data)
-{
-    //1. Send server's player's position
-    //2. Send number of zombies to send
-    //3. Send zombies (as locations)
-    // DO NOTHING!!!! Player position is only sent in player.c now
-}

@@ -42,7 +42,6 @@ void player_update(void *data)
         }
 		//comm_mqueue_append(players[0].position.y | 1 << 7); // TODO: Repeated code 
     	//protocol_handle_ir_output(true, false, players[0].position.y);
-        protocol_send_player_y(players[0].position.y);
 	}
 
     if (navswitch_push_event_p (NAVSWITCH_EAST) == true){   
@@ -52,7 +51,6 @@ void player_update(void *data)
             players[0].position.x += 1;
         }
 		//comm_mqueue_append(players[0].position.x & ~(1 << 7)); //TODO: Repeated code
-         protocol_send_player_x(players[0].position.x);
     	//protocol_handle_ir_output(true, true, players[0].position.x);
         
     }
@@ -65,7 +63,6 @@ void player_update(void *data)
         }
 		//comm_mqueue_append(players[0].position.y | 1 << 7); // TODO: Repeated code
     	//protocol_handle_ir_output(true, false, players[0].position.y);
-        protocol_send_player_y(players[0].position.y);
     }
     
     if (navswitch_push_event_p (NAVSWITCH_WEST)){   
@@ -76,7 +73,6 @@ void player_update(void *data)
         }
 		//comm_mqueue_append(players[0].position.x & ~(1 << 7)); // TODO: Repeated code
     	//protocol_handle_ir_output(true, true, players[0].position.x);
-        protocol_send_player_x(players[0].position.x);
     }
     
     uint32_t player_get_beat_rate(player players[]){
@@ -101,8 +97,9 @@ void player_decrease_health(void){
     }
     
 }
-
+/*
 void update_player_abs(__unused__ void* data) {
 		protocol_send_player_x(players[0].position.x);
 		protocol_send_player_y(players[0].position.y);
 }
+*/

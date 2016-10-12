@@ -13,13 +13,14 @@
 #define HANDLE_PLAYER 0
 #define HANDLE_ZOMBIE 1
 
+#define MESSAGE_AXIS_BIT 6
+#define MESSAGE_ENTITY_BIT 7
 
 bool _is_host = false;
 
 // Find out who is server and who is client
 bool protocol_init() {
-		if (protocol_find_server(254)) {
-				return false; // Found server
+		if (protocol_find_server(254)) { return false; // Found server
 		} else {
 				protocol_server_advertise();
 				_is_host = true;
@@ -61,89 +62,72 @@ void protocol_server_advertise() {
 		}
 }
 
-void protocol_get_update(){
-    char received_char = comm_getc();
-    if (received_char != '\0'){
-        //if ((received_char >> 7) & 1) {
-        //   // y
-        //    players[1].position.y = received_char & ~(1 << 7) & ~(1 << 6);
-        //} else {
-        //    players[1].position.x = received_char & ~(1 << 7) & ~(1 << 6);
-        //}
-        protocol_handle_ir_input(received_char);
-    }
+
+// Zombies Update::
+// 1. Send y coord
+// 2. Send range of x coords
+// 3. Send next y coord
+//
+//	0		0		0		0		0		0		0		0
+//	Z/P		X/Y	  |						VALUE 
+// 0Z 1P	0X 1Y
+
+
+char message_set_entity(char message, bool is_player) {
+		if (is_player) {
+			return message | 1 << MESSAGE_ENTITY_BIT;
+		} else {
+			return message & ~(1 << MESSAGE_ENTITY_BIT);
+		}
 }
 
-void protocol_send_player_x(int8_t value){
-    protocol_handle_ir_output(true, true, value);
+char message_set_axis(char message, bool is_y) {
+		if (is_y) {
+			return message | 1 << MESSAGE_AXIS_BIT;
+		} else {
+			return message & ~(1 << MESSAGE_AXIS_BIT);
+		}
 }
 
-void protocol_send_zombie(point value){
-    static int8_t previous_y = 0;
-    if (value.y != previous_y){
-        protocol_send_zombie_y(value.y);
-        previous_y = value.y;
-    } 
-    protocol_send_zombie_x(value.x);
+// Return true if message contains player orinate, false if zombie
+bool message_is_player_entity(char message) {
+		return (message >> MESSAGE_ENTITY_BIT) & 1;
 }
 
-void protocol_send_player_y(int8_t value){
-    protocol_handle_ir_output(true, false, value);
+// Return true if message contains Y ordinate, false if X
+bool message_is_y_axis(char message) {
+		return (message >> MESSAGE_AXIS_BIT) & 1;
 }
 
-void protocol_send_zombie_x(int8_t value){
-    protocol_handle_ir_output(false, true, value);
+char message_strip(char message) {
+		return message & ~(3 << 6);
 }
 
-void protocol_send_zombie_y(int8_t value){
-    protocol_handle_ir_output(false, false, value);
-}
-
-
-void protocol_handle_ir_input(char given_message){
-
-    int8_t stripped_message = (int8_t)(given_message & ~(1 << BIT_UNIT) & ~(1 << BIT_AXIS));
-    //if ((received_char >> 7) & 1) {
-        //   // y
-        //    players[1].position.y = received_char & ~(1 << 7) & ~(1 << 6);
-        //} else {
-        //    players[1].position.x = received_char & ~(1 << 7) & ~(1 << 6);
-        //}
-
-    // is zombie
-    if ((given_message >> BIT_UNIT) & HANDLE_ZOMBIE) {
-        if (stripped_message != 0 && !_is_host){
-            
-            if ((given_message >> BIT_AXIS) & HANDLE_Y) {
-                level_set_zombie(0, stripped_message);
-                
-            } else {
-                level_set_zombie(stripped_message, 0);
-            }
-        }
-        
-    // is player   
-    } else if ((given_message >> BIT_UNIT) & HANDLE_PLAYER){
-        if (stripped_message != 0){
-            if ((given_message >> BIT_AXIS) & HANDLE_Y) {
-                players[1].position.y = stripped_message;
-            } else {
-                players[1].position.x = stripped_message;
-            } 
-        }
-    }
+void protocol_write_player(__unused__ void* data) {
+		char message_x = players[0].position.x;
+		message_x = message_set_entity(message_x, true);
+		message_x = message_set_axis(message_x, false);
+		comm_mqueue_append(message_x);
+		
+		char message_y = players[0].position.y;
+		message_y = message_set_entity(message_y, true);
+		message_y = message_set_axis(message_y, true);
+		comm_mqueue_append(message_y);
 }
 
 
-void protocol_handle_ir_output(bool is_player, bool is_x, int8_t position_value){
-    char to_send = (char)position_value;
-    if (!is_player){
-        to_send = to_send | HANDLE_ZOMBIE << BIT_UNIT;
-    }
-    if (!is_x){
-        to_send = to_send | HANDLE_Y << BIT_AXIS;
-    }
-    comm_mqueue_append(to_send);
-
+void protocol_read_player(__unused__ void* data) {
+		if (ir_uart_read_ready_p() ){
+			char message = comm_getc();
+			if (message != 0) {
+			if (message_is_player_entity(message)) {
+				if (message_is_y_axis(message)) {
+					players[1].position.y = message_strip(message);
+				} else {
+					players[1].position.x = message_strip(message);
+				}
+			}
+		}
+}
 }
 
