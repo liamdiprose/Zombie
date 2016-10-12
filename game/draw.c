@@ -91,11 +91,11 @@ void display_convert_level(void){
         for (y = 0; y < DISPLAY_HEIGHT; y++){
             screen_data[y][x] =EMPTY_VALUE;
 
-            if (has_won){
+            if (player_has_won()){
                 if ( screen_win[y][x] == 1){
                     screen_data[y][x] = LEVEL_ZOMBIE;
                 }
-            } else if (has_lost) {
+            } else if (player_has_lost()) {
                 if ( screen_lose[y][x] == 1){
                     screen_data[y][x] = LEVEL_ZOMBIE;
                 }
