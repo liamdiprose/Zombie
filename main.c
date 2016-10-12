@@ -39,8 +39,6 @@ void initilization(void){
 
 void run_host(void){
     	
-
-//		level_set_point((point){4, 4}, LEVEL_ZOMBIE);
 		
 		event_t events[] =
 
@@ -96,7 +94,7 @@ void run_client(void){
          // read data from server
          // draw game
          // send data to host
-//         {.func = heartbeat_task,   .period = 6400,     .data = 0}, // included for proof of concept
+         {.func = heartbeat_task,   .period = 10,     .data = 0}, // included for proof of concept
      };
      
 

@@ -9,14 +9,11 @@ uint8_t p1_updated_zombies = 0;
 
 void level_init()
 {
-       for (uint8_t x = 0; x < LEVEL_WIDTH; x++){
-			   for (uint8_t y = 0; y < LEVEL_WIDTH; y++){
-
-			   level_data[y][x] = LEVEL_EMPTY;
-
-			   }
-       } 
-
+    for (uint8_t x = 0; x < LEVEL_WIDTH; x++){
+		for (uint8_t y = 0; y < LEVEL_WIDTH; y++){
+			level_data[y][x] = LEVEL_EMPTY;
+		}
+    } 
 }
 
 void level_set_zombie(uint8_t x, uint8_t y){
@@ -54,9 +51,9 @@ char level_get_point(point pt)
     return level_data[pt.y][pt.x];
 }
 
-void level_set_point(point pt, char thing)
+void level_set_point(point pt, char givenChar)
 {
-    level_data[pt.y][pt.x] = thing;
+    level_data[pt.y][pt.x] = givenChar;
 }
 
 point level_get_opponent()
@@ -67,15 +64,31 @@ point level_get_opponent()
 void level_move(point start, int8_t dest_x, int8_t dest_y)
 {
 	level_data[start.y][start.x] = LEVEL_EMPTY;
-	level_data[dest_y][dest_x] = LEVEL_ZOMBIE;
+    bool hit_player = false; 
+    for (uint8_t player_id =0; player_id <= 2; player_id++){
+        if (player_get_position(player_id).x == dest_x && player_get_position(player_id).y == dest_y){
+            hit_player = true;
+            if (player_id == 0){
+                player_decrease_health();
+            }
+        }
+    }
+    if (hit_player){
+        level_data[start.y][start.x] = LEVEL_ZOMBIE;
+    } else if (dest_x > start.x || dest_y > start.y){
+        level_data[dest_y][dest_x] = LEVEL_ZOMBIE_MOVED;
+    } else {
+        level_data[dest_y][dest_x] = LEVEL_ZOMBIE;
+    }
+	
 }
 
 // 
-bool nav_try_move(point pt, int8_t dx, int8_t dy)
+bool nav_try_move(point zombie_position, int8_t dx, int8_t dy)
 {
-    point canditate = {pt.x + dx, pt.y + dy};
+    point canditate = {zombie_position.x + dx, zombie_position.y + dy};
     if (level_get_point(canditate) == LEVEL_EMPTY) {
-        level_move(pt, canditate.x, canditate.y);
+        level_move(zombie_position, canditate.x, canditate.y);
         return true;
     } else {
         return false;
@@ -142,7 +155,9 @@ void nav_update_zombie_group(void* data)
         for (int8_t col = 0; col < LEVEL_WIDTH; col++) {
 			if (level_data[row][col] == LEVEL_ZOMBIE) {
                 nav_move_zombie((point) {col, row}, player_pos);
-			}
+			} else if (level_data[row][col] == LEVEL_ZOMBIE_MOVED){
+                level_data[row][col] = LEVEL_ZOMBIE;
+            }
 //            if (level_get_point( (point) {col, row}) == LEVEL_ZOMBIE) {
 //            }
         }
