@@ -77,7 +77,7 @@ void send_next_message(__unused__ void *data)
     if (ir_uart_write_ready_p()) {
         if (!comm_mqueue_empty_p()) {
             char message = comm_mqueue_pop();
-			ir_uart_putc(message);
+			ir_uart_putc_nocheck(message);
         }
     }
 }

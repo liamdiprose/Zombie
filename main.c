@@ -39,7 +39,6 @@ void initilization(void){
 
 
 void run_host(void){
-/*    	
         level_set_zombie(0, 2);
         level_set_zombie(3, 0);
 
@@ -50,7 +49,6 @@ void run_host(void){
         level_set_zombie(0, 3);
         level_set_zombie(5, 0);
 		//level_set_point((point){1,1}, LEVEL_ZOMBIE);
-*/
 		event_t events[] =
 
      {
@@ -60,29 +58,29 @@ void run_host(void){
          // update zombies
          // update player
          {.func = player_update,            .period = 1000,     .data = players},
-//         {.func = level_update_client,    .period = 5000,     .data = 0},
+         {.func = level_update_client,    .period = 5000,     .data = 0},
          
          // send data to client
 		 // TODO: Make this part of the player_update function
-		 {.func = send_next_message, 		.period = 800, 		.data = 0},
+		 {.func = send_next_message, 		.period = 100, 		.data = 0},
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
          {.func = display_set_camera,       .period = 200,      .data = players},
          {.func = display_convert_level,    .period = 400,      .data = 0},
          {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
-//TODO		 {.func = nav_update_zombie_group,	.period = 10000, 	.data = players},
-         {.func = protocol_read_player,		.period = 1000,	  	.data = 0}, 
+		 {.func = nav_update_zombie_group,	.period = 10000, 	.data = players},
+         {.func = protocol_read,			.period = 100,	  	.data = 0}, 
          {.func = protocol_write_player,	.period = 1000,	  	.data = 0}, 
          // for client
          // read input from client
          // read data from server
          // draw game
          // send data to host
-         {.func = heartbeat_task,   .period = 100,     .data = 0},
+         {.func = heartbeat_task,		   .period = 100,     .data = 0},
      };
      
-     event_manager (events, 10);
+     event_manager (events, 12);
 }
 
 void run_client(void){
@@ -94,7 +92,7 @@ void run_client(void){
          // update zombies
          // update player
          {.func = player_update,            .period = 1000,     .data = players},
-         {.func = send_next_message, 		.period = 500, 		.data = 0},
+         {.func = send_next_message, 		.period = 100, 		.data = 0},
          // send data to client
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
@@ -102,7 +100,7 @@ void run_client(void){
          {.func = display_convert_level,    .period = 400,      .data = 0},
          {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
-         {.func = protocol_read_player,		.period = 1000,	  	.data = 0}, 
+         {.func = protocol_read,			.period = 100,	  	.data = 0}, 
          {.func = protocol_write_player,	.period = 1000,	  	.data = 0}, 
          // for client
          // read input from client
@@ -122,7 +120,7 @@ int main (void)
      initilization();
      if(is_host){
          run_host();
-     }else{
+     } else {
          run_client();
      }
      return 0;

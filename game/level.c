@@ -167,7 +167,6 @@ void nav_update_zombie_group(void* data)
         }
     }
 }
-/*
 void level_update_client(void * data) {
 		point client_pos = players[1].position;
 		uint8_t x_start = 0;
@@ -191,23 +190,24 @@ void level_update_client(void * data) {
 			   y_finish = client_pos.y + CLIENT_UPDATE_YPADDING;	
 		}
 		
+/*
 		uint8_t row;
 		uint8_t col;
 
 		for (col = y_start; col < y_finish; col++) {
 				for (row = x_start; row < x_finish; row++) {
-					protocol_send_zombie((point){col, row});				
+					protocol_write_zombie((point){col, row});				
 				}
-
+}
+*/
         uint8_t row;
 		uint8_t col;
 
 		for (col = 0; col < LEVEL_HEIGHT; col++) {
 				for (row = 0; row < LEVEL_WIDTH; row++) {
-                    if (level_data[row][col]){
-                        protocol_send_zombie((point){col, row});
+                    if (level_data[row][col] == LEVEL_ZOMBIE){
+                        protocol_write_zombie((point){col, row});
                     }
 				}
 		}
 }
-*/
