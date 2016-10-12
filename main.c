@@ -58,7 +58,7 @@ void run_host(void){
          // update zombies
          // update player
          {.func = player_update,            .period = 1000,     .data = players},
-         {.func = level_update_client,    .period = 5000,     .data = 0},
+         {.func = level_update_client,	    .period = 5000,     .data = 0},
          
          // send data to client
 		 // TODO: Make this part of the player_update function

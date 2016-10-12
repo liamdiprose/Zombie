@@ -17,9 +17,16 @@
 #define MESSAGE_AXIS_BIT 6
 #define MESSAGE_BOARD_BIT 5
 
+#define UPDATE_XPADDING 4
+#define UPDATE_YPADDING 5
+
 bool _is_host = false;
-uint8_t last_zombie_y = 0;
-uint8_t last_zombie_x = 0;
+uint8_t previous_y = LEVEL_HEIGHT;
+uint8_t previous_x = 0;
+uint8_t x_min = 0;
+uint8_t x_max = LEVEL_WIDTH;
+uint8_t y_min = 0;
+uint8_t y_max = LEVEL_HEIGHT;
 
 // Find out who is server and who is client
 bool protocol_init()
@@ -67,16 +74,6 @@ void protocol_server_advertise()
         }
     }
 }
-
-
-// Zombies Update::
-// 1. Send y coord
-// 2. Send range of x coords
-// 3. Send next y coord
-//
-//      0               0               0               0               0               0               0               0
-//      Z/P             X/Y       |                                             VALUE 
-// 0Z 1P        0X 1Y
 
 
 char message_set_entity(char message, bool is_player)
@@ -170,9 +167,9 @@ void protocol_write_zombie_col(uint8_t x_val)
 
 void protocol_write_zombie(point zombie)
 {
-    if (zombie.y != last_zombie_y) {
+    if (zombie.y != previous_y) {
         protocol_write_zombie_row(zombie.y);
-        last_zombie_y = zombie.y;
+        previous_y = zombie.y;
     }
     protocol_write_zombie_col(zombie.x);
 }
@@ -183,6 +180,79 @@ void protocol_read_zombie(char message)
     if (_is_host) {
         return;
     }
+
+	
+	// If y is lower than previous y, then its a new update, so clear all the rows from y_min to received y
+	// Set x_last to x_min (calculated)
+	// For every received x point, 
+	// 		Clear up to the point
+	// 		Place the point
+	// 		Save the next point to x_last
+	// When recevied next y (row has finished)
+	// 		Clear from x_last to x_max
+	// 		Clear rows from y_last + 1 up to next y
+	// 		Set x_last to x_min
+	// 		Repeat <forevery x point> 
+	// Back to top
+
+	if (message_is_y_axis(message)) {
+			// If lower than previous y, recalculate x/y_min/_max
+			// Clear rows from y_min up to new_y
+			
+			uint8_t new_y = message_strip(message);
+			
+			// Clear the rest of the line	
+			for (; previous_x < x_max; previous_x++) {
+					level_set_point((point) {previous_y, previous_x}, LEVEL_EMPTY);
+			}
+
+			// Set the bounds of the new rectangle around the cleints position
+			if (new_y < previous_y) {
+					if (players[0].position.x > UPDATE_XPADDING) {
+						x_min = players[0].position.x - UPDATE_XPADDING;
+					} else {
+						x_min = 0;
+					}
+					if (players[0].position.x < LEVEL_WIDTH - UPDATE_XPADDING) {
+						x_max = players[0].position.x + UPDATE_XPADDING;
+					} else {
+						x_max = LEVEL_WIDTH;
+					}
+					if (players[0].position.y > UPDATE_YPADDING) { 
+						y_min = players[1].position.y - UPDATE_YPADDING;
+					} else {
+						y_min = 0;
+					}
+					if (players[0].position.y < LEVEL_HEIGHT - UPDATE_YPADDING) {
+						y_max = players[0].position.y + UPDATE_YPADDING;
+					} else {
+						y_max = LEVEL_HEIGHT;
+					}
+			}
+
+			// Clear 
+			for (; previous_y < new_y; previous_y++) {
+					for (uint8_t col = x_min; col < x_max; col ++) {
+							level_set_point((point) {col, previous_y}, LEVEL_EMPTY);
+					}
+			}
+			previous_x = x_min;
+			previous_y = new_y+1;
+	}
+	else {
+			// Clear from x_min up to the received point
+			uint8_t new_x = message_strip(message);
+
+			for (; previous_x < new_x; previous_x++) {
+					level_set_point((point) {previous_x, previous_y}, LEVEL_EMPTY);
+			} 
+			level_set_point((point) {new_x, previous_y}, LEVEL_ZOMBIE);
+			previous_x = new_x + 1;
+	}
+
+
+/*	
+
     if (message_is_y_axis(message)) {
         last_zombie_y = message_strip(message);
         for (int i = 1; i < 4; i++) {
@@ -202,6 +272,7 @@ void protocol_read_zombie(char message)
                         x_val, last_zombie_y}
                         , LEVEL_ZOMBIE);
     }
+	*/
 }
 
 
