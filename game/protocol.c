@@ -14,6 +14,8 @@
 #define HANDLE_ZOMBIE 1
 
 
+
+
 // Find out who is server and who is client
 bool protocol_init() {
 		if (protocol_find_server(254)) {
@@ -60,18 +62,18 @@ void protocol_server_advertise() {
 void protocol_get_update(){
     char received_char = comm_getc();
     if (received_char != '\0'){
-        if ((received_char >> 7) & 1) {
-            // y
-            players[1].position.y = received_char & ~(1 << 7) & ~(1 << 6);
-        } else {
-            players[1].position.x = received_char & ~(1 << 7) & ~(1 << 6);
-        }
-        //protocol_handle_ir_input(received_char);
+        //if ((received_char >> 7) & 1) {
+        //   // y
+        //    players[1].position.y = received_char & ~(1 << 7) & ~(1 << 6);
+        //} else {
+        //    players[1].position.x = received_char & ~(1 << 7) & ~(1 << 6);
+        //}
+        protocol_handle_ir_input(received_char);
     }
 }
 
 void protocol_send_update(){
-
+    static point zombie_update;
 }
 
 void protocol_send_player_x(int8_t value){
@@ -96,10 +98,12 @@ void protocol_handle_ir_input(char given_message){
             level_set_zombie(0, stripped_message);
         }    
     } else if ((given_message >> BIT_UNIT) & HANDLE_PLAYER) {
-        if ((given_message >> BIT_AXIS) & HANDLE_X) {
-            players[1].position.x = stripped_message;
-        } else if ((given_message >> BIT_AXIS) & HANDLE_Y) {
-            players[1].position.y = stripped_message;
+        if (stripped_message != 0){
+            if ((given_message >> BIT_AXIS) & HANDLE_X) {
+                players[1].position.x = stripped_message;
+            } else if ((given_message >> BIT_AXIS) & HANDLE_Y) {
+                players[1].position.y = stripped_message;
+            }
         }
     }
 }
@@ -108,10 +112,10 @@ void protocol_handle_ir_input(char given_message){
 void protocol_handle_ir_output(bool is_player, bool is_x, int8_t position_value){
     char to_send = (char)position_value;
     if (!is_player){
-        to_send = to_send | 1 << BIT_UNIT;
+        to_send = to_send | HANDLE_ZOMBIE << BIT_UNIT;
     }
     if (!is_x){
-        to_send = to_send | 1 << BIT_AXIS;
+        to_send = to_send | HANDLE_Y << BIT_AXIS;
     }
     comm_mqueue_append(to_send);
 
