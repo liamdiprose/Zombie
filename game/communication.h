@@ -21,14 +21,14 @@ void send_point(point pt);
 point recv_point();
 
 // Receive either x or y position for the player and set it
-void update_player_position(__unused__ void* data);
+void update_player_position(__unused__ void *data);
 
 // If IR is ready, send the next message in the queue
-void send_next_message(__unused__ void* data);
+void send_next_message(__unused__ void *data);
 
 
 // Send player position to client TODO: Zombie information
-void update_client(__unused__ void* data);
+void update_client(__unused__ void *data);
 
-void receive_server(__unused__ void* data);
+void receive_server(__unused__ void *data);
 #endif

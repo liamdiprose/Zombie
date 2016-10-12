@@ -52,10 +52,11 @@ char comm_getc()
 {
     if (ir_uart_read_ready_p()) {
         char recved = ir_uart_getc();
-	        return recved;
-	}
-	return '\0';
+        return recved;
+    }
+    return '\0';
 }
+
 /*
 // Recevie one byte of a position (either x or y), based on the first bit of the register
 void update_player_position(__unused__ void *data)
@@ -77,8 +78,7 @@ void send_next_message(__unused__ void *data)
     if (ir_uart_write_ready_p()) {
         if (!comm_mqueue_empty_p()) {
             char message = comm_mqueue_pop();
-			ir_uart_putc_nocheck(message);
+            ir_uart_putc_nocheck(message);
         }
     }
 }
-

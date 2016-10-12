@@ -28,6 +28,7 @@
 #define NAV_UP 0, -1
 #define NAV_DOWN 0, 1
 
+char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
 
 void level_init();
 
@@ -43,8 +44,8 @@ bool nav_try_move(point pt, int8_t dx, int8_t dy);
 void nav_move_zombie(point zombie_location, point player_location);
 
 // Update locations of a group of zombies (0 to NUM_ZOMBIE_GROUPS-1).
-void nav_update_zombie_group(void* data);
+void nav_update_zombie_group(void *data);
 
-void level_update_client(void * data);
+void level_update_client(void *data);
 
 #endif
