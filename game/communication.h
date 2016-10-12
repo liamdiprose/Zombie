@@ -3,6 +3,14 @@
 
 #include "point.h"
 
+#define CLIENT_RESPONSE_TIMEOUT 250
+#define SETUP_LISTEN_FOR_SERVER_TIME
+#define PROTOCOL_SERVER 's'
+#define PROTOCOL_CLIENT 'c'
+#define PACER_RATE 500
+#define NULL 0
+#define MAX_MQUEUE_SIZE 10
+
 // Initilise communication
 void comm_init(void);
 
