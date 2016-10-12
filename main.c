@@ -42,8 +42,13 @@ void run_host(void){
     	
         level_set_zombie(0, 2);
         level_set_zombie(3, 0);
+
+        level_set_zombie(0, 1);
         level_set_zombie(4, 0);
         
+        
+        level_set_zombie(0, 3);
+        level_set_zombie(5, 0);
 		//level_set_point((point){1,1}, LEVEL_ZOMBIE);
 		event_t events[] =
 
