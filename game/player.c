@@ -5,6 +5,7 @@
 #include "player.h"
 #include "point.h"
 #include "pacer.h"
+#include "protocol.h"
 // TODO: Move send_point to protocol.c
 #include "communication.h"
 
@@ -108,7 +109,7 @@ void player_update(void *data)
 
     if (players[0].health <= 0){
         player_has_lost();
-        protocol_send_player_y(LEVEL_WIDTH + 3);
+        protocol_send_player((point){0, LEVEL_WIDTH + 3});
     }
 }
 

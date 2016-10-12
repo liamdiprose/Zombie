@@ -78,7 +78,7 @@ heartbeat.o: game/heartbeat.c drivers/system.h drivers/led.h game/heartbeat.h
 level.o: game/level.c drivers/system.h game/draw.h game/player.h game/level.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
-player.o: game/player.c drivers/system.h drivers/navswitch.h game/point.h game/player.h
+player.o: game/player.c drivers/system.h drivers/navswitch.h game/protocol.h game/point.h game/player.h
 	$(CC) -c $(CFLAGS) $< -o $@
 
 communication.o: game/communication.c drivers/system.h drivers/navswitch.h game/point.h game/communication.h drivers/ir_uart.h drivers/pacer.h
