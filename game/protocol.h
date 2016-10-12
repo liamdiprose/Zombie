@@ -17,7 +17,7 @@ void protocol_handle_ir_input(char given_message);
 void protocol_handle_ir_output(bool is_player, bool is_x, int8_t position_value);
 void protocol_send_player_x(int8_t value);
 void protocol_send_player_y(int8_t value);
-void protocol_send_zombie(int8_t value);
+void protocol_send_zombie(point value);
 void protocol_send_zombie_x(int8_t value);
 void protocol_send_zombie_y(int8_t value);
 

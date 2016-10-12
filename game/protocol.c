@@ -101,20 +101,26 @@ void protocol_send_zombie_y(int8_t value){
 void protocol_handle_ir_input(char given_message){
 
     int8_t stripped_message = (int8_t)(given_message & ~(1 << BIT_UNIT) & ~(1 << BIT_AXIS));
+    //if ((received_char >> 7) & 1) {
+        //   // y
+        //    players[1].position.y = received_char & ~(1 << 7) & ~(1 << 6);
+        //} else {
+        //    players[1].position.x = received_char & ~(1 << 7) & ~(1 << 6);
+        //}
 
     // is zombie
     if ((given_message >> BIT_UNIT) & HANDLE_ZOMBIE) {
         if ((given_message >> BIT_AXIS) & HANDLE_Y) {
             level_set_zombie(0, stripped_message);
-        } else ((given_message >> BIT_AXIS) & HANDLE_X) {
+        } else {
             level_set_zombie(stripped_message, 0);
-        } 
+        }
     // is player   
     } else {
         if (stripped_message != 0){
             if ((given_message >> BIT_AXIS) & HANDLE_Y) {
                 players[1].position.y = stripped_message;
-            } else ((given_message >> BIT_AXIS) & HANDLE_X) {
+            } else {
                 players[1].position.x = stripped_message;
             } 
         }
