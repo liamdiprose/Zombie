@@ -112,15 +112,15 @@ void protocol_handle_ir_input(char given_message){
 
     // is zombie
     if ((given_message >> BIT_UNIT) & HANDLE_ZOMBIE) {
-        if (stripped_message != 0 && !_is_host){
-            if ((given_message >> BIT_AXIS) & HANDLE_Y) {
-                level_set_zombie(0, stripped_message);
-            } else {
-                level_set_zombie(stripped_message, 0);
-            }
-        }
-        level_set_zombie(1, 0);
+        //if (stripped_message != 0 && !_is_host){
+        //    if ((given_message >> BIT_AXIS) & HANDLE_Y) {
+        //        level_set_zombie(0, stripped_message);
+        //    } else {
+        //        level_set_zombie(stripped_message, 0);
+        //    }
+        //}
         level_set_zombie(0, 1);
+        level_set_zombie(1, 0);
     // is player   
     } else {
         if (stripped_message != 0){
