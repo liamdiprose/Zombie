@@ -9,6 +9,7 @@
 #include "point.h"
 #include "navswitch.h"
 #include "communication.h"
+#include "protocol.h"
 
 bool is_host = false;
 
@@ -88,7 +89,7 @@ void run_client(void){
          {.func = display_convert_level,    .period = 400,      .data = 0},
          {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
-         {.func = update_player_position,	.period = 100,	  	.data = 0}, 
+         {.func = protocol_get_update,	.period = 100,	  	.data = 0}, 
          // for client
          // read input from client
          // read data from server
