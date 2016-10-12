@@ -193,7 +193,7 @@ void level_update_client(void * data) {
 		uint8_t row;
 		uint8_t col;
 
-		for (col = y_start; col < y_end; col++) {
+		for (col = y_start; col < y_finish; col++) {
 				for (row = x_start; row < x_finish; row++) {
 					protocol_send_zombie((point){col, row});				
 				}
