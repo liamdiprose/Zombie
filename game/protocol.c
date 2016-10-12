@@ -74,12 +74,12 @@ void protocol_send_update(){
 
 }
 
-void protocol_send_player_x(){
-
+void protocol_send_player_x(int8_t value){
+    protocol_handle_ir_output(true, true, value);
 }
 
 void protocol_send_player_y(int8_t value){
-    //protocol_handle_ir_output(true, )
+    protocol_handle_ir_output(true, false, value);
 }
 
 
