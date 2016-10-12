@@ -4,7 +4,7 @@
 #include "point.h"
 #include "player.h"
 
-
+/*
 typedef struct message_s Message;
 struct message_s {
 		char message;
@@ -13,13 +13,44 @@ struct message_s {
 Message* queue_last;
 Message* message_queue = NULL;
 uint8_t mqueue_size = 0;
+*/
+
+char message_queue[MAX_MQUEUE_SIZE];
+uint8_t head = 0;
+uint8_t tail = -1;
+int message_count = 0;
+
+// TODO: change code
+char comm_mqueue_pop() {
+		char message = message_queue[head++];
+
+		if (head == MAX_MQUEUE_SIZE) {
+				head = 0;
+		}
+		message_count--;
+		return message;
+}
+
+// TODO: change code
+void comm_mqueue_append(char message) {
+		if (message_count < MAX_MQUEUE_SIZE) {
+				if (tail == MAX_MQUEUE_SIZE -1) {
+						tail = -1;
+				}
+
+				message_queue[++tail] = message;
+				message_count++;
+		}
+}
+
+
 
 // Initiate IR for communication
 void comm_init() {
 	ir_uart_init();
 }
 
-
+/*
 void comm_mqueue_add(char message) {
 	if (mqueue_size >= MAX_MQUEUE_SIZE) {
 			return;
@@ -46,13 +77,13 @@ char comm_mqueue_pop() {
 				return message;
 		}
 }
-
+*/
 
 
 void send_point(point pt) {
 
-		comm_mqueue_add(pt.x & ~(1 << 7));
-		comm_mqueue_add(pt.y | 1 << 7);
+		comm_mqueue_append(pt.x & ~(1 << 7));
+		comm_mqueue_append(pt.y | 1 << 7);
 }
 
 
@@ -86,5 +117,4 @@ void update_client(__unused__ void* data) {
 	//3. Send zombies (as locations)
 	send_point(players[0].position);
 }	
-
 

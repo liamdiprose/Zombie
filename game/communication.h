@@ -9,7 +9,7 @@
 #define PROTOCOL_CLIENT 'c'
 #define PACER_RATE 500
 #define NULL 0
-#define MAX_MQUEUE_SIZE 10
+#define MAX_MQUEUE_SIZE 20
 
 // Initilise communication
 void comm_init(void);
