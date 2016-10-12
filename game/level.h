@@ -18,6 +18,8 @@
 #define PLAYER_VALUE 30
 #define LEVEL_ZOMBIE 'z'
 #define ZOMBIE_VALUE 50
+#define LEVEL_ZOMBIE_MOVED 'm'
+#define ZOMBIE_MOVED_VALUE 50
 #define NUM_ZOMBIE_GROUPS 5
 
 // TODO: Confirm these directions
