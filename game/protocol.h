@@ -15,5 +15,8 @@ void protocol_server_advertise();
 void protocol_get_update();
 void protocol_handle_ir_input(char given_message);
 void protocol_handle_ir_output(bool is_player, bool is_x, int8_t position_value);
+void protocol_send_update();
+void protocol_send_player_x(int8_t value);
+void protocol_send_player_y(int8_t value);
 
 #endif
