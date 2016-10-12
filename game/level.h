@@ -45,6 +45,6 @@ void nav_move_zombie(point zombie_location, point player_location);
 // Update locations of a group of zombies (0 to NUM_ZOMBIE_GROUPS-1).
 void nav_update_zombie_group(void* data);
 
-
+void level_update_client(void * data);
 
 #endif
