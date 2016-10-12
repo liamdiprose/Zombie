@@ -194,9 +194,8 @@ void level_update_client() {
 		uint8_t col;
 
 		for (col = y_start; col < y_end; col++) {
-				// TODO: Send Y level
 				for (row = x_start; row < x_finish; row++) {
-					// TODO: Send Zombie				
+					protocol_send_zombie((point){col, row});				
 				}
 		}
 }
