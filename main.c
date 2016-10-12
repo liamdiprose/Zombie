@@ -60,7 +60,7 @@ void run_host(void){
          {.func = display_set_player,       .period = 200,      .data = players},
          {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
 		 {.func = nav_update_zombie_group,	.period = 10000, 	.data = players},
-         {.func = protocol_get_update,	.period = 100,	  	.data = 0}, 
+         {.func = protocol_get_update,		.period = 50,	  	.data = 0}, 
          // for client
          // read input from client
          // read data from server
@@ -95,7 +95,7 @@ void run_client(void){
          // read data from server
          // draw game
          // send data to host
-         {.func = heartbeat_task,   .period = 10,     .data = 0}, // included for proof of concept
+         {.func = heartbeat_task,   		.period = 50,     .data = 0}, // included for proof of concept
      };
      
 
