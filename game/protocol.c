@@ -169,9 +169,13 @@ void protocol_read_zombie(char message) {
 		}
 		if (message_is_y_axis(message)) {
 				last_zombie_y = message_strip(message);
+				for (int i = 1; i < 4; i++) {
+						level_set_point((point) {i + last_zombie_x, last_zombie_y}, LEVEL_EMPTY);
+				}	
+				last_zombie_x = 0;
 		} else {
 			uint8_t x_val = message_strip(message);
-			for (; last_zombie_x < x_val; last_zombie_x++) {
+			for (; last_zombie_x < x_val; ++last_zombie_x) {
 					level_set_point((point) {last_zombie_x, last_zombie_y} , LEVEL_EMPTY);
 			}
 			level_set_point((point) {x_val, last_zombie_y}, LEVEL_ZOMBIE);
