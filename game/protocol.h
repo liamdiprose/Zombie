@@ -26,7 +26,7 @@ void protocol_read_player(char message);
 
 
 
-void protocol_write_player(__unused__ void* data);
-void protocol_read(__unused__ void* data);
+void protocol_write_player(__unused__ void *data);
+void protocol_read(__unused__ void *data);
 
 #endif
