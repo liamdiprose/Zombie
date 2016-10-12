@@ -52,6 +52,14 @@ void display_set_player(void *data)
     new_position.x = players[0].position.x - camera.x;
     new_position.y = players[0].position.y - camera.y;
     screen_data[new_position.y][new_position.x] = PLAYER_VALUE;
+
+    if ( players[1].position.x >= camera.x && players[1].position.x < camera.x + (DISPLAY_WIDTH) ){
+        if ( players[1].position.y >= camera.y && players[1].position.y < camera.y + (DISPLAY_HEIGHT) ){
+            new_position.x = players[1].position.x - camera.x;
+            new_position.y = players[1].position.y - camera.y;
+            screen_data[new_position.y][new_position.x] = PLAYER_VALUE;
+        }    
+    }
 }
 
 void display_convert_level(void){

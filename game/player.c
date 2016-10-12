@@ -7,11 +7,25 @@
 #include "pacer.h"
 
 
-void player_init(player players[]){
-     players[0].position.x = 2;
-     players[0].position.y = 2;
+void player_init(player players[], bool is_host){
+     if (is_host){
+         players[0].position.x = 2;
+         players[0].position.y = 3;
+         
+         players[1].position.x = 3;
+         players[1].position.y = 2;
+     
+     } else {
+         players[0].position.x = 3;
+         players[0].position.y = 2;
+         
+         players[1].position.x = 2;
+         players[1].position.y = 3;
+     }
+     players[0].health = 4;
+     players[1].health = 4;
 
-     players[0].health = 6400;
+     
 
      navswitch_init ();
 }
@@ -57,4 +71,8 @@ void player_update(void *data)
     uint32_t player_get_beat_rate(player players[]){
         return players[0].health; 
     }
+}
+
+uint8_t player_get_health(void){
+    return players[0].health;
 }
