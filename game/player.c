@@ -8,6 +8,25 @@
 // TODO: Move send_point to protocol.c
 #include "communication.h"
 
+bool has_won = false;
+bool has_lost = false;
+
+void player_set_won(void){
+    has_won = true;
+}
+
+void player_set_lost(void){
+    has_lost = true;
+}
+
+bool player_has_won(void){
+    return has_won;
+}
+
+bool player_has_lost(void){
+    return has_lost;
+}
+
 void player_init(player players[], bool is_host){
      if (is_host){
          players[0].position.x = 2;
@@ -88,7 +107,7 @@ void player_update(void *data)
     }
 
     if (players[0].health <= 0){
-        has_lost = true;
+        player_has_lost();
         protocol_send_player_y(LEVEL_WIDTH + 3);
     }
 }
@@ -116,7 +135,7 @@ void player_set_other_player_x(int8_t x_position){
 
 void player_set_other_player_y(int8_t y_position){
     if (y_position > LEVEL_HEIGHT){
-        has_won = true;
+        player_has_won();
     } else {
         players[1].position.y = y_position;
     }
