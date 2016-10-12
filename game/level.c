@@ -193,7 +193,7 @@ void level_update_client() {
 		uint8_t row;
 		uint8_t col;
 
-		for (col = y_start; col < y_end; col++) {
+		for (col = y_start; col < y_finish; col++) {
 				// TODO: Send Y level
 				for (row = x_start; row < x_finish; row++) {
 					// TODO: Send Zombie				
