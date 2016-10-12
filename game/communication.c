@@ -104,20 +104,6 @@ void send_point(point pt) {
 		comm_mqueue_add(pt.y | 1 << 7);
 }
 
-point recv_point() {
-		point ret = {.x = 0, .y = 0};
-		char received_char;
-
-		received_char = ir_uart_getc();
-		if (received_char >= 0 && received_char < 128) {
-			   ret.x = received_char;	
-		}
-		received_char = ir_uart_getc();
-		if (received_char >= 0 && received_char < 128) {
-			   ret.y = received_char;	
-		}
-		return ret;
-}
 
 // Recevie one byte of a position (either x or y), based on the first bit of the register
 void update_player_position(__unused__ void* data) {
@@ -150,9 +136,5 @@ void update_client(__unused__ void* data) {
 	//3. Send zombies (as locations)
 	send_point(players[0].position);
 }	
-	
-void receive_server(__unused__ void* data) {
-		if (ir_uart_read_ready_p() ) {
-				players[0].position = recv_point() ;
-		}
-}
+
+
