@@ -8,6 +8,7 @@
 #include "timer.h"
 
 void event_manager (event_t *events, uint8_t num_events){
+    // Initilize 
     timer_init ();
     register uint8_t current_event = 0;
 

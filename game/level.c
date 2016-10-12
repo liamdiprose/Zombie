@@ -19,6 +19,34 @@ void level_init()
 
 }
 
+void level_set_zombie(uint8_t x, uint8_t y){
+    static uint8_t previous_x = 0;
+    static uint8_t previous_y = 0;
+    
+    if (y != previous_y){
+        for (uint8_t count = previous_x+1; count < LEVEL_WIDTH; count++){
+            level_data[y][count] = LEVEL_EMPTY;
+        }
+        previous_y = y;      
+        previous_x = 0;
+    }
+
+    if (previous_x == LEVEL_WIDTH){
+
+    } else if (x > previous_x){
+        for (uint8_t count = previous_x + 1; count < x; count++){
+            level_data[previous_y][count] = LEVEL_EMPTY;
+        }
+        level_data[previous_y][x] = LEVEL_ZOMBIE;
+        previous_x = x;
+    } else {
+        for (uint8_t count = previous_x+1; count < LEVEL_WIDTH; count++){
+            level_data[y][count] = LEVEL_EMPTY;
+        }
+        previous_x = LEVEL_WIDTH;
+    }
+    
+}
 
 char level_get_point(point pt)
 {
