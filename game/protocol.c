@@ -62,9 +62,9 @@ void protocol_get_update(){
     if (received_char != '\0'){
         if ((received_char >> 7) & 1) {
             // y
-            players[1].position.y = received_char & ~(1 << 7);
+            players[1].position.y = received_char & ~(1 << 7) & ~(1 << 6);
         } else {
-            players[1].position.x = received_char & ~(1 << 7);
+            players[1].position.x = received_char & ~(1 << 7) & ~(1 << 6);
         }
         //protocol_handle_ir_input(received_char);
     }
