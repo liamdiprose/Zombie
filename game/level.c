@@ -167,7 +167,7 @@ void nav_update_zombie_group(void* data)
     }
 }
 
-void level_update_client() {
+void level_update_client(void * data) {
 		point client_pos = players[1].position;
 		uint8_t x_start = 0;
 		uint8_t y_start = 0;

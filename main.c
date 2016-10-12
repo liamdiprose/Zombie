@@ -40,7 +40,7 @@ void initilization(void){
 
 void run_host(void){
     	
-		
+		level_set_point((point){1,1}, LEVEL_ZOMBIE);
 		event_t events[] =
 
      {
@@ -50,9 +50,11 @@ void run_host(void){
          // update zombies
          // update player
          {.func = player_update,            .period = 1000,     .data = players},
+         {.func = level_update_client(),    .period = 1000,     .data = 0},
+         
          // send data to client
 		 // TODO: Make this part of the player_update function
-		 {.func = send_next_message, 		.period = 500, 		.data = 0},
+		 {.func = send_next_message, 		.period = 300, 		.data = 0},
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
          {.func = display_set_camera,       .period = 200,      .data = players},
@@ -81,7 +83,7 @@ void run_client(void){
          // update zombies
          // update player
          {.func = player_update,            .period = 1000,     .data = players},
-         {.func = send_next_message, 		.period = 500, 		.data = 0},
+         {.func = send_next_message, 		.period = 300, 		.data = 0},
          // send data to client
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
