@@ -60,9 +60,28 @@ void protocol_server_advertise() {
 void protocol_get_update(){
     char received_char = comm_getc();
     if (received_char != '\0'){
-        protocol_handle_ir_input(received_char);
+        if ((received_char >> 7) & 1) {
+            // y
+            players[1].position.y = received_char & ~(1 << 7);
+        } else {
+            players[1].position.x = received_char & ~(1 << 7);
+        }
+        //protocol_handle_ir_input(received_char);
     }
 }
+
+void protocol_send_update(){
+
+}
+
+void protocol_send_player_x(){
+
+}
+
+void protocol_send_player_y(int8_t value){
+    //protocol_handle_ir_output(true, )
+}
+
 
 void protocol_handle_ir_input(char given_message){
 
