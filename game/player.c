@@ -5,7 +5,8 @@
 #include "player.h"
 #include "point.h"
 #include "pacer.h"
-
+// TODO: Move send_point to protocol.c
+#include "communication.h"
 
 void player_init(player players[], bool is_host){
      if (is_host){
@@ -41,6 +42,7 @@ void player_update(void *data)
         } else {
             players[0].position.y += 1;
         }
+		comm_mqueue_append(players[0].position.y | 1 << 7); // TODO: Repeated code 
     }
 
     if (navswitch_push_event_p (NAVSWITCH_EAST) == true){   
@@ -49,6 +51,7 @@ void player_update(void *data)
         } else {
             players[0].position.x += 1;
         }
+		comm_mqueue_append(players[0].position.x & ~(1 << 7)); //TODO: Repeated code
         
     }
     
@@ -58,6 +61,7 @@ void player_update(void *data)
         } else {
             players[0].position.y -= 1;
         }
+		comm_mqueue_append(players[0].position.y | 1 << 7); // TODO: Repeated code
     }
     
     if (navswitch_push_event_p (NAVSWITCH_WEST)){   
@@ -66,6 +70,7 @@ void player_update(void *data)
         } else {
             players[0].position.x -= 1;
         }
+		comm_mqueue_append(players[0].position.x & ~(1 << 7)); // TODO: Repeated code
     }
     
     uint32_t player_get_beat_rate(player players[]){
