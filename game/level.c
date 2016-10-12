@@ -168,6 +168,7 @@ void nav_update_zombie_group(void* data)
 }
 
 void level_update_client(void * data) {
+    /*
 		point client_pos = players[1].position;
 		uint8_t x_start = 0;
 		uint8_t y_start = 0;
@@ -196,6 +197,17 @@ void level_update_client(void * data) {
 		for (col = y_start; col < y_finish; col++) {
 				for (row = x_start; row < x_finish; row++) {
 					protocol_send_zombie((point){col, row});				
+				}
+		}*/
+
+        uint8_t row;
+		uint8_t col;
+
+		for (col = 0; col < LEVEL_HEIGHT; col++) {
+				for (row = 0; row < LEVEL_WIDTH; row++) {
+                    if (level_data[row][col]){
+                        protocol_send_zombie((point){col, row});
+                    }
 				}
 		}
 }
