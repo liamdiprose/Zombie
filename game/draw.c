@@ -21,6 +21,26 @@ static bool is_pulse_fade_in = true;
 uint8_t    screen_data[DISPLAY_HEIGHT][DISPLAY_WIDTH];
 point      camera = {.x = 0, .y = 0};
 
+uint8_t    screen_lose[DISPLAY_HEIGHT][DISPLAY_WIDTH] = {
+    {0,0,0,0,0},
+    {1,1,1,1,1},
+    {1,0,1,0,1},
+    {1,1,1,1,1},
+    {0,1,1,1,0},
+    {0,1,1,1,0},
+    {0,0,0,0,0}
+};
+
+uint8_t    screen_win[DISPLAY_HEIGHT][DISPLAY_WIDTH] = {
+    {0,0,0,0,0},
+    {0,1,0,0,0},
+    {0,1,0,0,0},
+    {0,0,0,0,0},
+    {1,0,0,0,1},
+    {0,1,1,1,0},
+    {0,0,0,0,0}
+};
+
 void display_set_camera(void *data)
 {
     player* players = data;
@@ -70,6 +90,17 @@ void display_convert_level(void){
     for (x = 0; x < DISPLAY_WIDTH; x++){
         for (y = 0; y < DISPLAY_HEIGHT; y++){
             screen_data[y][x] =EMPTY_VALUE;
+
+            if (has_won){
+                if ( screen_win[y][x] == 1){
+                    screen_data[y][x] = LEVEL_ZOMBIE;
+                }
+            } else if (has_lost) {
+                if ( screen_lose[y][x] == 1){
+                    screen_data[y][x] = LEVEL_ZOMBIE;
+                }
+            } else {
+
             point current_position = (point){.x=camera.x + x, .y=camera.y + y};
             char current_char = level_get_point(current_position);
             
@@ -93,9 +124,12 @@ void display_convert_level(void){
             if (current_position.y == 0 || current_position.y == LEVEL_HEIGHT-1){
                 screen_data[y][x] = WALL_VALUE;
             }
+            }
             
         }    
     }
+    
+
 }
 
 /** Set state of a display pixel.
