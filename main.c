@@ -82,6 +82,7 @@ void run_client(void){
          // update zombies
          // update player
          {.func = player_update,            .period = 1000,     .data = players},
+         {.func = send_next_message, 		.period = 500, 		.data = 0},
          // send data to client
          // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
@@ -99,7 +100,7 @@ void run_client(void){
      };
      
 
-     event_manager (events, 7);
+     event_manager (events, 8);
 }
 
 
