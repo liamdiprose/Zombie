@@ -10,6 +10,7 @@
 
 bool has_won = false;
 bool has_lost = false;
+bool has_finished = false;
 
 void player_set_won(void){
     has_won = true;
@@ -42,8 +43,8 @@ void player_init(player players[], bool is_host){
          players[1].position.x = 2;
          players[1].position.y = 3;
      }
-     players[0].health = 4;
-     players[1].health = 4;
+     players[0].health = 8;
+     players[1].health = 8;
 
      navswitch_init ();
 }
@@ -107,8 +108,8 @@ void player_update(void *data)
     }
 
     if (players[0].health <= 0){
-        player_has_lost();
-        protocol_send_player((point){0, LEVEL_WIDTH + 3});
+        player_set_lost();
+        protocol_send_player((point){LEVEL_WIDTH + 5, LEVEL_HEIGHT + 5});
     }
 }
 
@@ -121,21 +122,47 @@ uint8_t player_get_health(void){
 }
 
 void player_decrease_health(void){
-    
-    if (players[0].health == 0){ 
+    if (!has_finished){
+        if (players[0].health == 0){
+            has_won = false;
+        } 
+    if (player_has_won()){
+        players[0].health = 2;
+        has_won = true;
+        has_lost = false;
+        has_finished =true;
+    }else if (player_has_lost()){
+        players[0].health = 0;
+        has_won = false;
+        has_lost = true;
+        has_finished = true;
+    }
+    else if (players[0].health == 0){ 
         players[0].health = 0;
     } else {
         players[0].health -= 1;
     }
+    }
 }
 
+static bool got_y = false;
+static bool got_x = false;
+
 void player_set_other_player_x(int8_t x_position){
-    players[1].position.x = x_position;
+    if (x_position == LEVEL_WIDTH + 5){
+        got_x = true;
+    } else {  
+        players[1].position.x = x_position;
+    }
 }
 
 void player_set_other_player_y(int8_t y_position){
-    if (y_position > LEVEL_HEIGHT){
-        player_has_won();
+    
+
+    if (got_x && got_y){
+        player_set_won();
+    } else if (y_position == LEVEL_HEIGHT + 5){
+        got_y = true;
     } else {
         players[1].position.y = y_position;
     }

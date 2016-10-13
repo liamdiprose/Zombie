@@ -51,4 +51,6 @@ void nav_update_zombie_group(__unused__ void *data);
 
 void level_update_client(__unused__ void *data);
 
+void level_add_zombie(void);
+
 #endif

@@ -23,21 +23,21 @@ point      camera = {.x = 0, .y = 0};
 
 uint8_t    screen_lose[DISPLAY_HEIGHT][DISPLAY_WIDTH] = {
     {0,0,0,0,0},
-    {1,1,1,1,1},
-    {1,0,1,0,1},
-    {1,1,1,1,1},
-    {0,1,1,1,0},
-    {0,1,1,1,0},
+    {100,100,100,100,100},
+    {100,0,100,0,100},
+    {100,100,100,100,100},
+    {0,100,100,100,0},
+    {0,100,100,100,0},
     {0,0,0,0,0}
 };
 
 uint8_t    screen_win[DISPLAY_HEIGHT][DISPLAY_WIDTH] = {
     {0,0,0,0,0},
-    {0,1,0,0,0},
-    {0,1,0,0,0},
+    {0,100,0,100,0},
+    {0,100,0,100,0},
     {0,0,0,0,0},
-    {1,0,0,0,1},
-    {0,1,1,1,0},
+    {100,0,0,0,100},
+    {0,100,100,100,0},
     {0,0,0,0,0}
 };
 
@@ -91,15 +91,7 @@ void display_convert_level(__unused__ void* data){
         for (y = 0; y < DISPLAY_HEIGHT; y++){
             screen_data[y][x] =EMPTY_VALUE;
 
-            if (player_has_won()){
-                if ( screen_win[y][x] == 1){
-                    screen_data[y][x] = LEVEL_ZOMBIE;
-                }
-            } else if (player_has_lost()) {
-                if ( screen_lose[y][x] == 1){
-                    screen_data[y][x] = LEVEL_ZOMBIE;
-                }
-            } else {
+            
 
             point current_position = (point){.x=camera.x + x, .y=camera.y + y};
             char current_char = level_get_point(current_position);
@@ -124,7 +116,7 @@ void display_convert_level(__unused__ void* data){
             if (current_position.y == 0 || current_position.y == LEVEL_HEIGHT-1){
                 screen_data[y][x] = WALL_VALUE;
             }
-            }
+            
             
         }    
     }
@@ -226,7 +218,13 @@ void display_draw(__unused__ void *data){
 
     register uint8_t count;
     for (count = 0; count < DISPLAY_HEIGHT; count++){
-        display_pixel_set ( current_col, count, frame_priority[pwm_tick] < screen_data[count][current_col]);
+        if (player_has_won()){
+            display_pixel_set ( current_col, count, frame_priority[pwm_tick] < screen_win[count][current_col]);
+        } else if (player_has_lost()) {
+            display_pixel_set ( current_col, count, frame_priority[pwm_tick] < screen_lose[count][current_col]);
+        } else {
+            display_pixel_set ( current_col, count, frame_priority[pwm_tick] < screen_data[count][current_col]);
+        }
     }
 
     pwm_tick = pwm_tick + 1;

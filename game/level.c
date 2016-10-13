@@ -212,3 +212,7 @@ void level_update_client(__unused__ void *data)
         }
     }
 }
+
+void level_add_zombie(void){
+    level_data[LEVEL_HEIGHT/2][LEVEL_WIDTH/2] = LEVEL_ZOMBIE;
+}
