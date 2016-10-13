@@ -64,21 +64,6 @@ char comm_getc(void)
     return '\0';
 }
 
-/*
-// Recevie one byte of a position (either x or y), based on the first bit of the register
-void update_player_position(__unused__ void *data)
-{
-    if (ir_uart_read_ready_p()) {
-        char recved = ir_uart_getc();
-        if ((recved >> 7) & 1) {
-            // y
-            players[1].position.y = recved & ~(1 << 7);
-        } else {
-            players[1].position.x = recved & ~(1 << 7);
-        }
-    }
-}
-*/
 //TASK Send the next message in queue iff ir is ready to write
 void send_next_message(__unused__ void *data)
 {
