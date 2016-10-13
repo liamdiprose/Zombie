@@ -256,9 +256,9 @@ void protocol_read_zombie(char message)
 					level_set_point((point) {previous_x, previous_y}, LEVEL_EMPTY);
 			} 
 			level_set_point((point) {new_x, previous_y}, LEVEL_ZOMBIE);
-			if (players[0].position.x == new_x && players[0].position.y == previous_y){
-				player_decrease_health();
-			}
+			//if (players[0].position.x == new_x && players[0].position.y == previous_y){
+			//	player_decrease_health();
+			//}
 			previous_x = new_x + 1;
 	}
 

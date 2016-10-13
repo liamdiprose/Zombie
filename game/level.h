@@ -48,4 +48,6 @@ void nav_update_zombie_group(void *data);
 
 void level_update_client(void *data);
 
+void level_add_zombie(void);
+
 #endif

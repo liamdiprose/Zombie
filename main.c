@@ -77,10 +77,12 @@ void run_host(void){
          // read data from server
          // draw game
          // send data to host
-         {.func = heartbeat_task,		   .period = 100,     .data = 0},
+         
+         {.func = level_add_zombie,		   .period = 100,     .data = 0},
+         {.func = heartbeat_task,		   .period = 25,     .data = 0},
      };
      
-     event_manager (events, 12);
+     event_manager (events, 13);
 }
 
 void run_client(void){
@@ -107,7 +109,7 @@ void run_client(void){
          // read data from server
          // draw game
          // send data to host
-         {.func = heartbeat_task,   		.period = 50,     .data = 0}, // included for proof of concept
+         {.func = heartbeat_task,   		.period = 25,     .data = 0}, // included for proof of concept
      };
      
 
