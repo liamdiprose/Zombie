@@ -29,7 +29,7 @@ uint8_t y_min = 0;
 uint8_t y_max = LEVEL_HEIGHT;
 
 // Find out who is server and who is client
-bool protocol_init()
+bool protocol_init(void)
 {
     if (protocol_find_server(254)) {
         return false;           // Found server
@@ -44,7 +44,6 @@ bool protocol_init()
 bool protocol_find_server(uint8_t timeout)
 {
     uint8_t count = 0;
-    bool server_found = false;
     pacer_init(PACER_RATE);
     while (count < timeout) {
         pacer_wait();
@@ -60,7 +59,7 @@ bool protocol_find_server(uint8_t timeout)
 }
 
 // Advertise a server forever
-void protocol_server_advertise()
+void protocol_server_advertise(void)
 {
     pacer_init(500);
     while (1) {
@@ -190,19 +189,6 @@ void protocol_read_zombie(char message)
         return;
     }
 
-	
-	// If y is lower than previous y, then its a new update, so clear all the rows from y_min to received y
-	// Set x_last to x_min (calculated)
-	// For every received x point, 
-	// 		Clear up to the point
-	// 		Place the point
-	// 		Save the next point to x_last
-	// When recevied next y (row has finished)
-	// 		Clear from x_last to x_max
-	// 		Clear rows from y_last + 1 up to next y
-	// 		Set x_last to x_min
-	// 		Repeat <forevery x point> 
-	// Back to top
 
 	if (message_is_y_axis(message)) {
 			// If lower than previous y, recalculate x/y_min/_max
@@ -263,7 +249,6 @@ void protocol_read_zombie(char message)
 	}
 
 }
-
 
 
 void protocol_read(__unused__ void *data)

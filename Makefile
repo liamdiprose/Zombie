@@ -19,7 +19,7 @@ cstd = c99
 
 # Definitions.
 CC = avr-gcc
-CFLAGS = -mmcu=atmega32u2 -Ofast -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Igame -std=$(cstd)
+CFLAGS = -mmcu=atmega32u2 -Ofast -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Igame -std=$(cstd) -lm
 OBJCOPY = avr-objcopy
 SIZE = avr-size
 DEL = rm

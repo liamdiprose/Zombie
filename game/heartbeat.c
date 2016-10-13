@@ -1,6 +1,7 @@
 #include "system.h"
 #include "navswitch.h"
 #include "led.h"
+#include "player.h"
 
 void heartbeat_init( void ){
     led_init();

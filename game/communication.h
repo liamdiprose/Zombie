@@ -18,7 +18,13 @@ void comm_init(void);
 void send_point(point pt);
 
 // Receive a point on IR
-point recv_point();
+point recv_point(void);
+
+// Get character from serail
+char comm_getc(void);
+
+// Add a message to queue to be sent over IR serial
+void comm_mqueue_append(char message);
 
 // Receive either x or y position for the player and set it
 void update_player_position(__unused__ void *data);

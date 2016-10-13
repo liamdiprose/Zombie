@@ -4,13 +4,13 @@
 #include "point.h"
 
 // Configure who is server and who is client
-bool protocol_init();
+bool protocol_init(void);
 
 // Search for a server <timeout> times
 bool protocol_find_server(uint8_t timeout);
 
 // Advertise server forever
-void protocol_server_advertise();
+void protocol_server_advertise(void);
 
 char message_set_entity(char message, bool is_player);
 char message_set_axis(char message, bool is_y);
@@ -23,7 +23,7 @@ void protocol_write_zombie_col(uint8_t x_val);
 void protocol_write_zombie(point zombie);
 void protocol_read_zombie(char message);
 void protocol_read_player(char message);
-
+void protocol_send_player(point);
 
 
 void protocol_write_player(__unused__ void *data);

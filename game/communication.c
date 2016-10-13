@@ -2,7 +2,7 @@
 #include "communication.h"
 #include "pacer.h"
 #include "point.h"
-#include "player.h"
+// #include "player.h"
 
 char message_queue[MAX_MQUEUE_SIZE];
 uint8_t head = 0;
@@ -13,7 +13,7 @@ uint8_t message_count = 0;
 char last_sent_message = 0;
 
 // TODO: change code
-char comm_mqueue_pop()
+char comm_mqueue_pop(void)
 {
     char message = message_queue[head++];
 
@@ -37,18 +37,18 @@ void comm_mqueue_append(char message)
 }
 
 
-bool comm_mqueue_empty_p()
+bool comm_mqueue_empty_p(void)
 {
     return message_count == 0;
 }
 
 // Initiate IR for communication
-void comm_init()
+void comm_init(void)
 {
     ir_uart_init();
 }
 
-char comm_getc()
+char comm_getc(void)
 {
     if (ir_uart_read_ready_p()) {
         char recved = ir_uart_getc();

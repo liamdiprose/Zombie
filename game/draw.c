@@ -83,7 +83,7 @@ void display_set_player(void *data)
     }
 }
 
-void display_convert_level(void){
+void display_convert_level(__unused__ void* data){
     register int x;
     register int y;
     

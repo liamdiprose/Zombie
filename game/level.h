@@ -30,10 +30,13 @@
 
 char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
 
-void level_init();
+void level_init(void);
 
 // Get the thing at the point
 char level_get_point(point pt);
+
+// Set a point to be a certain entity
+void level_set_point(point pt, char entity);
 
 void level_set_zombie(uint8_t x, uint8_t y);
 
@@ -44,8 +47,8 @@ bool nav_try_move(point pt, int8_t dx, int8_t dy);
 void nav_move_zombie(point zombie_location, point player_location);
 
 // Update locations of a group of zombies (0 to NUM_ZOMBIE_GROUPS-1).
-void nav_update_zombie_group(void *data);
+void nav_update_zombie_group(__unused__ void *data);
 
-void level_update_client(void *data);
+void level_update_client(__unused__ void *data);
 
 #endif

@@ -2,6 +2,8 @@
 #include "level.h"
 #include "point.h"
 #include "player.h"
+#include "stdlib.h"
+#include "protocol.h"
 
 #define CLIENT_UPDATE_XPADDING 3        // Proximity of zombies to send to client
 #define CLIENT_UPDATE_YPADDING 4
@@ -9,7 +11,7 @@
 uint8_t p1_updated_zombies = 0;
 
 
-void level_init()
+void level_init(void)
 {
     for (uint8_t x = 0; x < LEVEL_WIDTH; x++) {
         for (uint8_t y = 0; y < LEVEL_WIDTH; y++) {
@@ -60,10 +62,6 @@ void level_set_point(point pt, char givenChar)
     level_data[pt.y][pt.x] = givenChar;
 }
 
-point level_get_opponent()
-{
-
-}
 
 void level_move(point start, int8_t dest_x, int8_t dest_y)
 {
@@ -177,7 +175,7 @@ void nav_update_zombie_group(void *data)
 }
 
 
-void level_update_client(void *data)
+void level_update_client(__unused__ void *data)
 {
     point client_pos = players[1].position;
     uint8_t x_start = 0;
@@ -204,8 +202,8 @@ void level_update_client(void *data)
     uint8_t row;
     uint8_t col;
 
-    for (col = 0; col < LEVEL_HEIGHT; col++) {
-        for (row = 0; row < LEVEL_WIDTH; row++) {
+    for (col = x_start; col < x_finish; col++) {
+        for (row = y_start; row < y_finish; row++) {
             if (level_data[row][col] == LEVEL_ZOMBIE) {
                 protocol_write_zombie((point) {
                                       col, row}

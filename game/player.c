@@ -141,9 +141,3 @@ void player_set_other_player_y(int8_t y_position){
     }
 }
 
-/*
-void update_player_abs(__unused__ void* data) {
-		protocol_send_player_x(players[0].position.x);
-		protocol_send_player_y(players[0].position.y);
-}
-*/
