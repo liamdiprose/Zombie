@@ -10,6 +10,7 @@
 
 bool has_won = false;
 bool has_lost = false;
+bool has_finished = false;
 
 void player_set_won(void){
     has_won = true;
@@ -121,19 +122,26 @@ uint8_t player_get_health(void){
 }
 
 void player_decrease_health(void){
+    if (!has_finished){
+        if (players[0].health == 0){
+            has_won = false;
+        } 
     if (player_has_won()){
         players[0].health = 2;
         has_won = true;
         has_lost = false;
+        has_finished =true;
     }else if (player_has_lost()){
         players[0].health = 0;
         has_won = false;
         has_lost = true;
+        has_finished = true;
     }
     else if (players[0].health == 0){ 
         players[0].health = 0;
     } else {
         players[0].health -= 1;
+    }
     }
 }
 

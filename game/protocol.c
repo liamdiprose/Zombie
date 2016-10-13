@@ -211,9 +211,9 @@ void protocol_read_zombie(char message)
 			uint8_t new_y = message_strip(message);
 			
 			// Clear the rest of the line	
-			for (; previous_x < x_max; previous_x++) {
-					level_set_point((point) {previous_y, previous_x}, LEVEL_EMPTY);
-			}
+			//for (; previous_x < x_max; previous_x++) {
+			//		level_set_point((point) {previous_y, previous_x}, LEVEL_EMPTY);
+			//}
 
 			// Set the bounds of the new rectangle to clear board around the cleints position
 			if (new_y < previous_y) {
@@ -240,11 +240,13 @@ void protocol_read_zombie(char message)
 			}
 
 			// Clear 
+			/*
 			for (; previous_y < new_y; previous_y++) {
 					for (uint8_t col = x_min; col < x_max; col ++) {
 							level_set_point((point) {col, previous_y}, LEVEL_EMPTY);
 					}
-			}
+			}*/
+			level_set_zombie(0, new_y);
 			previous_x = x_min;
 			previous_y = new_y+1;
 	}
@@ -252,10 +254,13 @@ void protocol_read_zombie(char message)
 			// Clear from x_min up to the received point
 			uint8_t new_x = message_strip(message);
 
+			/*
 			for (; previous_x < new_x; previous_x++) {
 					level_set_point((point) {previous_x, previous_y}, LEVEL_EMPTY);
 			} 
 			level_set_point((point) {new_x, previous_y}, LEVEL_ZOMBIE);
+			*/
+			level_set_zombie(new_x, 0);
 			//if (players[0].position.x == new_x && players[0].position.y == previous_y){
 			//	player_decrease_health();
 			//}
