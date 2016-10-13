@@ -1,6 +1,6 @@
 # Team 124 ENCE Assignment
 
-
+A project by Liam Diprose and Jeremy Craig
 ## Meeting 29 Sep
 
 ### Zombie Game
