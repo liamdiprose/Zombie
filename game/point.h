@@ -7,9 +7,9 @@
 #define POINT_H
 
 #include "system.h"
-// TODO: Rename point to Point (with a capital)
-typedef struct point point;
-struct point {
+
+typedef struct Point Point;
+struct Point {
    int8_t    x;
    int8_t    y;
 };

@@ -24,20 +24,20 @@ A project by Liam Diprose and Jeremy Craig
 	* -- Do both games need the same time?
 	 
 * Drawing is completely seperated from game logic
-* Zombies are keep as a list (indexed based on when zombie updates), x and y coordinates are saved as value
-	* Faster updating
+* Zombies are keep as a booleans in a 2D boolean array
 
 * Or: integers are stored in a two dimentional array where the integer is the time the zombie updates
 	* Faster navigation
 
-TODO:
-* Determine mathematical functions for determining when things happen based on a continuous counter (Use hardware counter?) and other factors such as speed
-  * Heart rate LED
-  * Zombie update
-  * Player update
-  * IR serial
-  * Redraws
-  * Not screw up
+## Modified Drivers
+* Two drivers have been modified, in regards to increasing the board refresh rate
+	* ir_uart.h:  changed IR_UART_BAUD_RATE from 2400 to 3000  
+	* timer.h:    changed TIMER_CLOCK_RATE from 256 to 1
 
-* Investigate drawing of map 
-* Tasks
+## Copied Code Snippits
+
+
+## Known Bugs
+* 13.10.2016
+	* Client only draws the first zombie on each row
+	* IR Communication is not as optimised as desired and impacts screen display

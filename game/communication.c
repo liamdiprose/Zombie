@@ -1,3 +1,10 @@
+/** @file   communication.h
+    @author Liam Diprose & Jeremy Craig
+    @date   13 October 2016
+
+    @brief Routines for interfacing with the ir_uart
+*/
+
 #include "ir_uart.h"
 #include "communication.h"
 #include "pacer.h"

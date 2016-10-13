@@ -8,16 +8,23 @@
 #include "timer.h"
 
 void event_manager (event_t *events, uint8_t num_events){
-    // Initilize 
+    // Initilize timer
     timer_init ();
     register uint8_t current_event = 0;
 
     while (1){
+
+        // loop through all events
         for (current_event = 0; current_event < num_events; current_event++ ){
             (events + current_event)->counter += 1;
 
+            // if the individual events's counter has reached the specifed period
             if ((events + current_event)->counter > (events + current_event)->period){
+                
+                // reset counter
                 (events + current_event)->counter = 0;
+
+                // execute event's function
                 (events + current_event)->func ((events +current_event)->data);
             }
 

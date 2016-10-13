@@ -1,3 +1,9 @@
+/** @file   player.c
+    @author Liam Diprose & Jeremy Craig
+    @date   9 October 2016
+    @brief  controls and stores zombie location
+*/
+
 #ifndef PLAYER_H
 #define PLAYER_H
 
@@ -5,7 +11,7 @@
 #include "point.h"
 
 typedef struct {
-   point position;
+   Point position;
    uint32_t health;
 } player;
 
@@ -21,7 +27,7 @@ bool player_has_lost(void);
 
 void player_init(player players[], bool is_host);
 void player_update(void *data);
-point player_get_position(uint8_t id);
+Point player_get_position(uint8_t id);
 uint8_t player_get_health(void);
 void player_decrease_health(void);
 void player_set_other_player_x(int8_t x_position);

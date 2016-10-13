@@ -1,3 +1,9 @@
+/** @file   protocol.h
+    @author Liam Diprose & Jeremy Craig
+    @date   9 October 2016
+    @brief  controls and stores zombie location
+*/
+
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
 
@@ -20,10 +26,10 @@ char message_strip(char message);
 
 void protocol_write_zombie_row(uint8_t new_y);
 void protocol_write_zombie_col(uint8_t x_val);
-void protocol_write_zombie(point zombie);
+void protocol_write_zombie(Point zombie);
 void protocol_read_zombie(char message);
 void protocol_read_player(char message);
-void protocol_send_player(point);
+void protocol_send_player(Point);
 
 
 void protocol_write_player(__unused__ void *data);

@@ -1,25 +1,29 @@
-# Zombie Survival Makefile
-# Liam Diprose and Jeremy Craig
-#
-# TODO: Stuff about the makefile: targets etc
-#
+# ----------------modfied makefile details----------------------
+# File:   Makefile
+# Author: Liam Diprose and Jeremy Craig
+# Descr:  Makefile for Zombie Survival Makefile
+
+# ----------------original makefile details----------------------
+# Original Author: M. P. Hayes, UCECE
+# Date:   12 Sep 2010
+
 
 
 # Target file, without extention. i.e.  $(TARGET).c
 TARGET = main
 
 # Optimisation, s for compiled size optimisation
-OPTIMISATION = s
+OPTIMISATION = fast
 
 # MCU to compile for/flash
 MMCU = atmega32u2
 
 # C Standard
-cstd = c99
+CSTD = c99
 
 # Definitions.
 CC = avr-gcc
-CFLAGS = -mmcu=atmega32u2 -Ofast -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Igame -std=$(cstd) -lm
+CFLAGS = -mmcu=$(MMCU) -O$(OPTIMISATION)  -Wall -Wstrict-prototypes -Wextra -g -Idrivers -Igame -std=$(CSTD) -lm
 OBJCOPY = avr-objcopy
 SIZE = avr-size
 DEL = rm

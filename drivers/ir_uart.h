@@ -1,6 +1,9 @@
-/** @file   ir_uart.h
-    @author Michael Hayes
-    @date   10 December 2004
+/** @file               ir_uart.h
+    @author             Michael Hayes
+    @date               10 December 2004
+    @modified by        Liam Diprose & Jeremy Craig
+    @modified date      13 October 2016
+    @modified details   changed IR_UART_BAUD_RATE from 2400 to 3000
 
     @defgroup IR_uart Infrared uart driver
 

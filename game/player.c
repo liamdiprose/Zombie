@@ -1,3 +1,10 @@
+/** @file   player.c
+    @author Liam Diprose & Jeremy Craig
+    @date   9 October 2016
+    @brief  controls and stores zombie location
+*/
+
+
 #include "system.h"
 #include "navswitch.h"
 #include "pio.h"
@@ -109,11 +116,11 @@ void player_update(void *data)
 
     if (players[0].health <= 0){
         player_set_lost();
-        protocol_send_player((point){LEVEL_WIDTH + 5, LEVEL_HEIGHT + 5});
+        protocol_send_player((Point){LEVEL_WIDTH + 5, LEVEL_HEIGHT + 5});
     }
 }
 
-point player_get_position(uint8_t id){
+Point player_get_position(uint8_t id){
     return players[id].position;
 }
 

@@ -1,3 +1,9 @@
+/** @file   level.h
+    @author Liam Diprose & Jeremy Craig
+    @date   9 October 2016
+    @brief  controls and stores zombie location
+*/
+
 #ifndef LEVEL_H
 #define LEVEL_H
 
@@ -33,18 +39,18 @@ char level_data[LEVEL_HEIGHT][LEVEL_WIDTH];
 void level_init(void);
 
 // Get the thing at the point
-char level_get_point(point pt);
+char level_get_point(Point pt);
 
 // Set a point to be a certain entity
-void level_set_point(point pt, char entity);
+void level_set_point(Point pt, char entity);
 
 void level_set_zombie(uint8_t x, uint8_t y);
 
 // Move zombie in direction if free space
-bool nav_try_move(point pt, int8_t dx, int8_t dy);
+bool nav_try_move(Point pt, int8_t dx, int8_t dy);
 
 // Try move zombie closer to the player
-void nav_move_zombie(point zombie_location, point player_location);
+void nav_move_zombie(Point zombie_location, Point player_location);
 
 // Update locations of a group of zombies (0 to NUM_ZOMBIE_GROUPS-1).
 void nav_update_zombie_group(__unused__ void *data);

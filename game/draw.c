@@ -1,8 +1,8 @@
-/** @file   display.c
-    @author M. P. Hayes, UCECE
-    @date   23 August 2010
-    @brief  Bit-mapped display driver.
-    @modified
+/** @file   draw.c
+    @author Liam Diprose & Jeremy Craig
+    @date   13 October 2016
+
+    @brief draw routines for zombie game
 */
 #include "system.h"
 #include "ledmat.h"
@@ -19,7 +19,7 @@ static int current_pulse_value = 0;
 static bool is_pulse_fade_in = true;
 
 uint8_t    screen_data[DISPLAY_HEIGHT][DISPLAY_WIDTH];
-point      camera = {.x = 0, .y = 0};
+Point      camera = {.x = 0, .y = 0};
 
 uint8_t    screen_lose[DISPLAY_HEIGHT][DISPLAY_WIDTH] = {
     {0,0,0,0,0},
@@ -68,12 +68,12 @@ void display_set_camera(void *data)
 void display_set_player(void *data)
 {
     player* players = data;
-    point p1_position;
+    Point p1_position;
     p1_position.x = players[0].position.x - camera.x;
     p1_position.y = players[0].position.y - camera.y;
     screen_data[p1_position.y][p1_position.x] = PLAYER_VALUE;
 
-    point p2_position;
+    Point p2_position;
     p2_position.x = players[1].position.x - camera.x;
     p2_position.y = players[1].position.y - camera.y;
     if ( p2_position.x >= 0 && p2_position.x < DISPLAY_WIDTH ){
@@ -93,7 +93,7 @@ void display_convert_level(__unused__ void* data){
 
             
 
-            point current_position = (point){.x=camera.x + x, .y=camera.y + y};
+            Point current_position = (Point){.x=camera.x + x, .y=camera.y + y};
             char current_char = level_get_point(current_position);
             
             if ((current_position.x%4) == 0 && (current_position.y%4) == 0 ){

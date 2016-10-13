@@ -1,3 +1,9 @@
+/** @file   protocol.c
+    @author Liam Diprose & Jeremy Craig
+    @date   9 October 2016
+    @brief  controls and stores zombie location
+*/
+
 #include "ir_uart.h"
 #include "communication.h"
 #include "pacer.h"
@@ -124,7 +130,7 @@ char message_strip(char message)
     return message & ~(7 << 5);
 }
 
-void protocol_send_player(point pt)
+void protocol_send_player(Point pt)
 {
     char message_x = pt.x;
     message_x = message_set_entity(message_x, true);
@@ -163,7 +169,7 @@ void protocol_write_zombie_col(uint8_t x_val) {
 		comm_mqueue_append(message);
 }
 
-void protocol_write_zombie(point zombie) {
+void protocol_write_zombie(Point zombie) {
 		if (zombie.y != previous_y) {
 				protocol_write_zombie_row(zombie.y);
 				previous_y = zombie.y;

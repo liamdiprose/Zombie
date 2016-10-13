@@ -1,3 +1,9 @@
+/** @file   level.c
+    @author Liam Diprose & Jeremy Craig
+    @date   9 October 2016
+    @brief  controls and stores zombie location
+*/
+
 #include "system.h"
 #include "level.h"
 #include "point.h"
@@ -52,18 +58,18 @@ void level_set_zombie(uint8_t x, uint8_t y)
 
 }
 
-char level_get_point(point pt)
+char level_get_point(Point pt)
 {
     return level_data[pt.y][pt.x];
 }
 
-void level_set_point(point pt, char givenChar)
+void level_set_point(Point pt, char givenChar)
 {
     level_data[pt.y][pt.x] = givenChar;
 }
 
 
-void level_move(point start, int8_t dest_x, int8_t dest_y)
+void level_move(Point start, int8_t dest_x, int8_t dest_y)
 {
     level_data[start.y][start.x] = LEVEL_EMPTY;
     bool hit_player = false;
@@ -87,9 +93,9 @@ void level_move(point start, int8_t dest_x, int8_t dest_y)
 }
 
 // 
-bool nav_try_move(point zombie_position, int8_t dx, int8_t dy)
+bool nav_try_move(Point zombie_position, int8_t dx, int8_t dy)
 {
-    point canditate = { zombie_position.x + dx, zombie_position.y + dy };
+    Point canditate = { zombie_position.x + dx, zombie_position.y + dy };
     if (level_get_point(canditate) == LEVEL_EMPTY) {
         level_move(zombie_position, canditate.x, canditate.y);
         return true;
@@ -100,12 +106,12 @@ bool nav_try_move(point zombie_position, int8_t dx, int8_t dy)
 
 
 // Move a single zombie towards the player. Do not move if cannot move closer in x or y direction.
-void nav_move_zombie(point zombie_pos, point player_pos)
+void nav_move_zombie(Point zombie_pos, Point player_pos)
 {
     bool attempted_sideways_move = false;
     bool has_moved = false;
 
-    point difference =
+    Point difference =
         { zombie_pos.x - player_pos.x, zombie_pos.y - player_pos.y };
     if (abs(difference.x) > abs(difference.y)) {
         // Try move sideways first 
@@ -147,7 +153,7 @@ void nav_move_zombie(point zombie_pos, point player_pos)
     }
 }
 
-uint8_t distance(point a, point b)
+uint8_t distance(Point a, Point b)
 {
     return (a.x - b.x) * (a.x - b.x) + (a.y - b.y) * (a.y - b.y);
 }
@@ -159,7 +165,7 @@ void nav_update_zombie_group(void *data)
     player *players = data;
     for (int8_t row = 0; row < LEVEL_HEIGHT; row++) {
         for (int8_t col = 0; col < LEVEL_WIDTH; col++) {
-            point zombie = { col, row };
+            Point zombie = { col, row };
             if (level_data[row][col] == LEVEL_ZOMBIE) {
                 if (distance(players[0].position, zombie) <
                     distance(players[1].position, zombie)) {
@@ -177,7 +183,7 @@ void nav_update_zombie_group(void *data)
 
 void level_update_client(__unused__ void *data)
 {
-    point client_pos = players[1].position;
+    Point client_pos = players[1].position;
     uint8_t x_start = 0;
     uint8_t y_start = 0;
 
@@ -205,7 +211,7 @@ void level_update_client(__unused__ void *data)
     for (col = x_start; col < x_finish; col++) {
         for (row = y_start; row < y_finish; row++) {
             if (level_data[row][col] == LEVEL_ZOMBIE) {
-                protocol_write_zombie((point) {
+                protocol_write_zombie((Point) {
                                       col, row}
                 );
             }

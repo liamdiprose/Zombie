@@ -1,15 +1,12 @@
-/** @file   display.h
-    @author M. P. Hayes, UCECE
-    @date   23 August 2010
-    @brief  Bit-mapped display driver.
+/** @file   draw.h
+    @author Liam Diprose & Jeremy Craig
+    @date   13 October 2016
 
-    @defgroup display Bit-mapped display driver
-       
-    This module implements a simple display frame-buffer.  It abstracts the
-    multiplexing of a LED matrix display.
+    @brief draw routines for zombie game
 */
-#ifndef DISPLAY_H
-#define DISPLAY_H
+
+#ifndef DRAW_H
+#define DRAW_H
 
 #include "system.h"
 #include "level.h"

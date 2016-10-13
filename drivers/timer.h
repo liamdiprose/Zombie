@@ -3,6 +3,11 @@
     @date   18 August 2011
     @brief  Timer support.
 
+    @modified by        Liam Diprose & Jeremy Craig
+    @modified date      13 October 2016
+    @modified details   changed TIMER_CLOCK_DIVISOR from 2400 to 3000
+
+
     @defgroup timer Timer module
 
     This module provides simple timer support by abstracting a
