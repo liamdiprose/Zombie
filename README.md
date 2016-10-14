@@ -35,7 +35,7 @@ A project by Liam Diprose and Jeremy Craig
 	* timer.h:    changed TIMER_CLOCK_RATE from 256 to 1
 
 ## Copied Code Snippits
-
+* We have sampled to pieces of code from off the internet, that being the queue in communications.c and the Point struct in point.h
 
 ## Known Bugs
 * 13.10.2016

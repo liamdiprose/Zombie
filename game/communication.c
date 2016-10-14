@@ -9,17 +9,27 @@
 #include "communication.h"
 #include "pacer.h"
 #include "point.h"
-// #include "player.h"
 
+// - Variables ---------------------------------------------------------------
 char message_queue[MAX_MQUEUE_SIZE];
 uint8_t head = 0;
 uint8_t tail = -1;
 uint8_t message_count = 0;
 
-
 char last_sent_message = 0;
 
-// TODO: change code
+
+// - comm_init ---------------------------------------------------------------
+// Initiate IR for communication
+// ---------------------------------------------------------------------------
+void comm_init(void)
+{
+    ir_uart_init();
+}
+
+// - comm_mqueue_pop ---------------------------------------------------------
+// Popping from IR Queue
+// ---------------------------------------------------------------------------
 char comm_mqueue_pop(void)
 {
     char message = message_queue[head++];
@@ -31,7 +41,9 @@ char comm_mqueue_pop(void)
     return message;
 }
 
-// TODO: change code
+// - comm_mqueue_append ------------------------------------------------------
+// Adding to IR Queue
+// ---------------------------------------------------------------------------
 void comm_mqueue_append(char message)
 {
     if (message_count != MAX_MQUEUE_SIZE) {
@@ -43,18 +55,17 @@ void comm_mqueue_append(char message)
     }
 }
 
-
+// - comm_mqueue_empty_p -----------------------------------------------------
+// Check to see if the queue is empty
+// ---------------------------------------------------------------------------
 bool comm_mqueue_empty_p(void)
 {
     return message_count == 0;
 }
 
-// Initiate IR for communication
-void comm_init(void)
-{
-    ir_uart_init();
-}
-
+// - comm_getc ---------------------------------------------------------------
+// returns a character when the buffer has a value 
+// ---------------------------------------------------------------------------
 char comm_getc(void)
 {
     if (ir_uart_read_ready_p()) {
@@ -64,7 +75,9 @@ char comm_getc(void)
     return '\0';
 }
 
-//TASK Send the next message in queue iff ir is ready to write
+// - send_next_message -------------------------------------------------------
+// Send the next message in queue iff ir is ready to write
+// ---------------------------------------------------------------------------
 void send_next_message(__unused__ void *data)
 {
     if (ir_uart_write_ready_p()) {

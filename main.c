@@ -11,7 +11,7 @@
 #include "communication.h"
 #include "protocol.h"
 
-// - Variables ----------------------------------------------------------
+// - Variables ---------------------------------------------------------------
 bool is_host = false;
 
 // - Initilize game ----------------------------------------------------------
@@ -29,7 +29,7 @@ void initilization(void){
      is_host = protocol_init();
 }
 
-// - Host Events ----------------------------------------------------------
+// - Host Events ------------------------------------------------------------
 // Events to be run if board is set as the host
 // --------------------------------------------------------------------------
 void run_host(void){
@@ -86,7 +86,9 @@ void run_client(void){
     event_manager (events, 10);
 }
 
-// Main program
+// - Main program -----------------------------------------------------------
+// 
+// --------------------------------------------------------------------------
 int main (void)
 {
      initilization();

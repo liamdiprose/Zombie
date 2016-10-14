@@ -11,7 +11,7 @@
 #include "player.h"
 #include "point.h"
 
-
+// - Variables -------------------------------------------------------------
 static uint8_t display[DISPLAY_WIDTH];
 static uint8_t col = 0;
 static uint8_t pwm_tick = 0;
@@ -41,6 +41,9 @@ uint8_t    screen_win[DISPLAY_HEIGHT][DISPLAY_WIDTH] = {
     {0,0,0,0,0}
 };
 
+// - display_set_camera -----------------------------------------------------------
+// sets the offset of the camera based on the boards player position
+// ---------------------------------------------------------------------------
 void display_set_camera(void *data)
 {
     Player* players = data;
@@ -65,6 +68,9 @@ void display_set_camera(void *data)
     }
 }
 
+// - display_set_player ------------------------------------------------------
+// 
+// ---------------------------------------------------------------------------
 void display_set_player(void *data)
 {
     Player* players = data;
@@ -83,6 +89,9 @@ void display_set_player(void *data)
     }
 }
 
+// - display_convert_level ---------------------------------------------------
+// 
+// ---------------------------------------------------------------------------
 void display_convert_level(__unused__ void* data){
     register int x;
     register int y;
@@ -124,6 +133,9 @@ void display_convert_level(__unused__ void* data){
 
 }
 
+// - display_pixel_set -------------------------------------------------------
+// 
+// ---------------------------------------------------------------------------
 /** Set state of a display pixel.
     @param col pixel column
     @param row pixel row
@@ -145,7 +157,9 @@ void display_pixel_set (uint8_t col, uint8_t row, bool val)
     display[col] = pattern;
 }
 
-/** Update display (perform refreshing).  */
+// - display_update -----------------------------------------------------------
+// Update display (perform refreshing).
+// ---------------------------------------------------------------------------
 uint8_t display_update (void)
 {
     ledmat_display_column (display[col], col);
@@ -158,7 +172,9 @@ uint8_t display_update (void)
 }
 
 
-/** Clear display.   */
+// - display_clear -----------------------------------------------------------
+// Clear display.
+// ---------------------------------------------------------------------------
 void display_clear (void)
 {
     register int col;
@@ -168,7 +184,9 @@ void display_clear (void)
 }
 
 
-/** Initialise display.   */
+// - display_init  -----------------------------------------------------------
+// Initialise display.
+// ---------------------------------------------------------------------------
 void display_init (void )
 {
     register int x = 0;
@@ -187,6 +205,9 @@ void display_init (void )
     display_clear ();
 }
 
+// - display_pulse -----------------------------------------------------------
+// 
+// ---------------------------------------------------------------------------
 void display_pulse(__unused__ void *data){
     if (is_pulse_fade_in){
         current_pulse_value++;
@@ -201,6 +222,9 @@ void display_pulse(__unused__ void *data){
     }
 }
 
+// - framerate variables -----------------------------------------------------
+// 
+// ---------------------------------------------------------------------------
 static uint8_t current_col = 0;
 static uint8_t frame_priority[41] = { 
     /*0*/  0,20,12,32,6,26,23,36,3,16,
@@ -210,8 +234,10 @@ static uint8_t frame_priority[41] = {
            38
     };
 
+// - display_draw ------------------------------------------------------------
+// 
+// ---------------------------------------------------------------------------
 void display_draw(__unused__ void *data){
-
     if (pwm_tick > STEPS_OF_BRIGHTNESS){
         pwm_tick = 0;
     } 
@@ -228,6 +254,5 @@ void display_draw(__unused__ void *data){
     }
 
     pwm_tick = pwm_tick + 1;
-    
     current_col = display_update ();
 }

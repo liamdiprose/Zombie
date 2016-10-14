@@ -15,12 +15,17 @@
 #include "led.h"
 #include "player.h"
 
+
+// - heartbeat_init ---------------------------------------------------------------
 // Initilises heartbeat
+// --------------------------------------------------------------------------------
 void heartbeat_init( void ){
     led_init();
 }
 
-// updates the led based on the amount of times called
+// - heartbeat_task ---------------------------------------------------------------
+// Updates the led based on the amount of times called
+// --------------------------------------------------------------------------------
  void heartbeat_task (__unused__ void *data)
  {
      static bool on = false;
