@@ -13,9 +13,9 @@
 typedef struct {
    Point position;
    uint32_t health;
-} player;
+} Player;
 
-player     players[2];
+Player     players[2];
 
 void player_set_won(void);
 
@@ -25,7 +25,7 @@ bool player_has_won(void);
 
 bool player_has_lost(void);
 
-void player_init(player players[], bool is_host);
+void player_init(Player players[], bool is_host);
 void player_update(void *data);
 Point player_get_position(uint8_t id);
 uint8_t player_get_health(void);

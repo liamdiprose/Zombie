@@ -43,7 +43,7 @@ uint8_t    screen_win[DISPLAY_HEIGHT][DISPLAY_WIDTH] = {
 
 void display_set_camera(void *data)
 {
-    player* players = data;
+    Player* players = data;
     if (players[0].position.x - camera.x == 4){
         camera.x += 1;
     } else if(players[0].position.x - camera.x == 0){
@@ -67,7 +67,7 @@ void display_set_camera(void *data)
 
 void display_set_player(void *data)
 {
-    player* players = data;
+    Player* players = data;
     Point p1_position;
     p1_position.x = players[0].position.x - camera.x;
     p1_position.y = players[0].position.y - camera.y;

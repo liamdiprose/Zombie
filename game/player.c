@@ -35,7 +35,7 @@ bool player_has_lost(void){
     return has_lost;
 }
 
-void player_init(player players[], bool is_host){
+void player_init(Player players[], bool is_host){
      if (is_host){
          players[0].position.x = 2;
          players[0].position.y = 3;
@@ -58,7 +58,7 @@ void player_init(player players[], bool is_host){
 
 void player_update(void *data)
 {
-    player* players = data;
+    Player* players = data;
     navswitch_update ();
 
     if (navswitch_push_event_p (NAVSWITCH_SOUTH) == true){   

@@ -26,7 +26,7 @@
 #define UPDATE_XPADDING 4
 #define UPDATE_YPADDING 5
 
-bool _is_host = false;
+bool is_server = false;
 uint8_t previous_y = LEVEL_HEIGHT;
 uint8_t previous_x = 0;
 uint8_t x_min = 0;
@@ -41,7 +41,7 @@ bool protocol_init(void)
         return false;           // Found server
     } else {
         protocol_server_advertise();
-        _is_host = true;
+        is_server = true;
         return true;
     }
 }
@@ -120,7 +120,7 @@ bool message_is_y_axis(char message)
     return (message >> MESSAGE_AXIS_BIT) & 1;
 }
 
-bool message_is_host(char message)
+bool messageis_server(char message)
 {
     return (message >> MESSAGE_BOARD_BIT) & 1;
 }
@@ -135,13 +135,13 @@ void protocol_send_player(Point pt)
     char message_x = pt.x;
     message_x = message_set_entity(message_x, true);
     message_x = message_set_axis(message_x, false);
-    message_x = message_set_board(message_x, _is_host);
+    message_x = message_set_board(message_x, is_server);
     comm_mqueue_append(message_x);
 
     char message_y = pt.y;
     message_y = message_set_entity(message_y, true);
     message_y = message_set_axis(message_y, true);
-    message_y = message_set_board(message_y, _is_host);
+    message_y = message_set_board(message_y, is_server);
     comm_mqueue_append(message_y);
 }
 
@@ -156,7 +156,7 @@ void protocol_write_zombie_row(uint8_t new_y)
     char message = new_y;
     message = message_set_entity(message, false);
     message = message_set_axis(message, true);
-    message = message_set_board(message, _is_host);
+    message = message_set_board(message, is_server);
     comm_mqueue_append(message);
 }
 
@@ -165,7 +165,7 @@ void protocol_write_zombie_col(uint8_t x_val) {
 		char message = x_val;
 		message = message_set_entity(message, false);
 		message = message_set_axis(message, false);
-		message = message_set_board(message, _is_host);
+		message = message_set_board(message, is_server);
 		comm_mqueue_append(message);
 }
 
@@ -191,7 +191,7 @@ void protocol_read_player(char message) {
 void protocol_read_zombie(char message)
 {
     // Assuming the entity bit has already been checked for zombie, and not host
-    if (_is_host) {
+    if (is_server) {
         return;
     }
 
@@ -266,7 +266,7 @@ void protocol_read(__unused__ void *data)
 {
     char message = comm_getc();
     if (message != 0) {
-        if (message_is_host(message) ^ _is_host) {
+        if (messageis_server(message) ^ is_server) {
             if (message_is_player_entity(message)) {
                 protocol_read_player(message);
             } else {

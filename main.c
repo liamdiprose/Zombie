@@ -11,22 +11,13 @@
 #include "communication.h"
 #include "protocol.h"
 
+// - Variables ----------------------------------------------------------
 bool is_host = false;
 
+// - Initilize game ----------------------------------------------------------
+//
+// ---------------------------------------------------------------------------
 void initilization(void){
-    //TODO: REORGANISE COMMUNICATION AND MANAGEMENT
-     // ADD : game variables
-
-     
-     // is_server or is_host
-     // level_data
-     // zombie positions
-     // init
-     // players init(players)
-     // level_init(level_layout)
-     // heartbeat_init(player[].health)
-     // Initilizes the screen_display
-     
      system_init ();
      display_init ();
      level_init ();
@@ -34,36 +25,29 @@ void initilization(void){
      heartbeat_init ();
      comm_init();
 
+     // Decide board's role
      is_host = protocol_init();
 }
 
-
+// - Host Events ----------------------------------------------------------
+// Events to be run if board is set as the host
+// --------------------------------------------------------------------------
 void run_host(void){
-        level_set_zombie(0, 2);
-        level_set_zombie(3, 0);
+    // Specify the original zombie positions
+    level_set_zombie(0, 2);
+    level_set_zombie(8, 0);
 
-        level_set_zombie(0, 1);
-        level_set_zombie(4, 0);
+    level_set_zombie(0, 6);
+    level_set_zombie(4, 0);
         
-        
-        level_set_zombie(0, 3);
-        level_set_zombie(5, 0);
-		//level_set_point((point){1,1}, LEVEL_ZOMBIE);
-		event_t events[] =
+    level_set_zombie(0, 7);
+    level_set_zombie(5, 0);
 
-     {
-         
-         // for host
-         // read input from host and client
-         // update zombies
-         // update player
+    // Specify the events to be run
+	Event_t events[] = {
          {.func = player_update,            .period = 1000,     .data = players},
          {.func = level_update_client,	    .period = 5000,     .data = 0},
-         
-         // send data to client
-		 // TODO: Make this part of the player_update function
 		 {.func = send_next_message, 		.period = 100, 		.data = 0},
-         // draw game
          {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
          {.func = display_set_camera,       .period = 200,      .data = players},
          {.func = display_convert_level,    .period = 400,      .data = 0},
@@ -72,51 +56,37 @@ void run_host(void){
 		 {.func = nav_update_zombie_group,	.period = 10000, 	.data = players},
          {.func = protocol_read,			.period = 100,	  	.data = 0}, 
          {.func = protocol_write_player,	.period = 1000,	  	.data = 0}, 
-         // for client
-         // read input from client
-         // read data from server
-         // draw game
-         // send data to host
-         
          {.func = level_add_zombie,		   .period = 100,     .data = 0},
          {.func = heartbeat_task,		   .period = 25,     .data = 0},
      };
-     
+
+     // Run given events in an event loop
      event_manager (events, 13);
 }
 
+// - Client Events ----------------------------------------------------------
+// Events to be run if board is set as a client
+// --------------------------------------------------------------------------
 void run_client(void){
-    event_t events[] =
-     {
-         
-         // for host
-         // read input from host and client
-         // update zombies
-         // update player
+    // Specify the events to be run
+    Event_t events[] = {
          {.func = player_update,            .period = 1000,     .data = players},
          {.func = send_next_message, 		.period = 100, 		.data = 0},
-         // send data to client
-         // draw game
-         {.func = display_pulse,            .period = 800,      .data = 0}, // drawing a test pattern
+         {.func = display_pulse,            .period = 800,      .data = 0},
          {.func = display_set_camera,       .period = 200,      .data = players},
          {.func = display_convert_level,    .period = 400,      .data = 0},
          {.func = display_set_player,       .period = 200,      .data = players},
-         {.func = display_draw,             .period = 1,        .data = 0}, // drawing a test pattern
+         {.func = display_draw,             .period = 1,        .data = 0},
          {.func = protocol_read,			.period = 100,	  	.data = 0}, 
          {.func = protocol_write_player,	.period = 1000,	  	.data = 0}, 
-         // for client
-         // read input from client
-         // read data from server
-         // draw game
-         // send data to host
-         {.func = heartbeat_task,   		.period = 25,     .data = 0}, // included for proof of concept
-     };
-     
-
-     event_manager (events, 10);
+         {.func = heartbeat_task,   		.period = 25,     .data = 0},
+    };
+    
+    // Run given events in an event loop
+    event_manager (events, 10);
 }
 
-
+// Main program
 int main (void)
 {
      initilization();

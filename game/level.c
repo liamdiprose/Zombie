@@ -162,7 +162,7 @@ uint8_t distance(Point a, Point b)
 // break up the execusion of this potienttally CPU-hog of a function
 void nav_update_zombie_group(void *data)
 {
-    player *players = data;
+    Player *players = data;
     for (int8_t row = 0; row < LEVEL_HEIGHT; row++) {
         for (int8_t col = 0; col < LEVEL_WIDTH; col++) {
             Point zombie = { col, row };

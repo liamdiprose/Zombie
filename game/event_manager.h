@@ -19,9 +19,10 @@ typedef struct event_struct
     void *data;
     timer_tick_t period;    
     uint32_t counter;
-} event_t;
+} Event_t;
 
-void event_manager (event_t *events, uint8_t num_events);
+// Manages all events given
+void event_manager (Event_t *events, uint8_t num_events);
 
 #endif
 

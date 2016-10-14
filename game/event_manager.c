@@ -7,7 +7,10 @@
 #include "event_manager.h"
 #include "timer.h"
 
-void event_manager (event_t *events, uint8_t num_events){
+// - Event manager ----------------------------------------------------------
+//  Runs each event when the individual event's time has runout
+// ---------------------------------------------------------------------------
+void event_manager (Event_t *events, uint8_t num_events){
     // Initilize timer
     timer_init ();
     register uint8_t current_event = 0;
